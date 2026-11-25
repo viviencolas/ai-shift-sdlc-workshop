@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notion-like</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar" aria-label="Pages">
+        <h1>Notion-like</h1>
+        <button id="new-page" type="button" class="primary">Nouvelle page</button>
+        <nav id="page-list"></nav>
+      </aside>
+      <main id="main"></main>
+    </div>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>
