@@ -5,7 +5,7 @@
     "moduleResolution": "Bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "outDir": "public/js",
-    "rootDir": "src/client",
+    "rootDir": "src",
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true,

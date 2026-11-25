@@ -1,11 +1,21 @@
-import { randomUUID } from "node:crypto";
-import type { Block, BlockType, Database, Page, PageSummary } from "../shared/types.js";
+import type { Block, BlockType, Database, Page, PageSummary } from "./types.js";
 import { HttpError } from "./errors.js";
 
 /**
- * Modèle de page : règles métier et validation, sans HTTP ni fichier.
+ * Modèle de page : règles métier et validation, sans HTTP, fichier ni API Node :
+ * le même code tourne dans le serveur et dans la version statique (navigateur).
  * Chaque fonction reçoit la base en mémoire ; la persistance est faite par l'appelant (voir app.ts).
  */
+
+function randomUUID(): string {
+  const c = globalThis.crypto;
+  if (typeof c.randomUUID === "function") return c.randomUUID();
+  const bytes = c.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6]! & 0x0f) | 0x40;
+  bytes[8] = (bytes[8]! & 0x3f) | 0x80;
+  const hex = [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
 
 const BLOCK_TYPES: readonly BlockType[] = ["heading", "paragraph", "bullet"];
 const MAX_TITLE = 200;

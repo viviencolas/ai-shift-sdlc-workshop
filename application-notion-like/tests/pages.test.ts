@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import type { Database } from "../src/shared/types.js";
-import { createPage, deletePage, getPage, listPages, seedDatabase, updatePage } from "../src/server/pages.js";
+import { createPage, deletePage, getPage, listPages, seedDatabase, updatePage } from "../src/shared/pages.js";
 
 const newDb = (): Database => ({ pages: [] });
 

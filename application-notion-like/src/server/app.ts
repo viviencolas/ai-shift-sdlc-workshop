@@ -1,8 +1,8 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
-import { HttpError } from "./errors.js";
-import { createPage, deletePage, getPage, listPages, updatePage } from "./pages.js";
+import { HttpError } from "../shared/errors.js";
+import { createPage, deletePage, getPage, listPages, updatePage } from "../shared/pages.js";
 import type { JsonStore } from "./storage.js";
 
 const MIME: Record<string, string> = {

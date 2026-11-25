@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import type { Database } from "../shared/types.js";
-import { seedDatabase } from "./pages.js";
+import { seedDatabase } from "../shared/pages.js";
 
 export class JsonStore {
   private db: Database;
