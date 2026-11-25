@@ -1,0 +1,40 @@
+{
+  "name": "aisdlc.code.planner",
+  "description": "Code · Planner — décompose l'implémentation en 5-10 steps atomiques, validation humaine.",
+  "model": "claude-opus-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.code.planner"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": true,
+    "run_terminal_cmd": true,
+    "web_search": false
+  },
+  "shell_allowlist": ["git log", "git diff", "git grep", "git status", "git ls-files"],
+  "mcp": {
+    "allowed_servers": ["atlassian", "github"],
+    "allowed_tools": [
+      "atlassian:get_issue",
+      "github:get_file_contents",
+      "github:search_code"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/code/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**", "apps/**", "packages/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "github_write": false,
+    "github_repos": ["aisdlc-sandbox"],
+    "figma_write": false,
+    "chat_write": false,
+    "human_checkpoint": "approved_true_in_plan"
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

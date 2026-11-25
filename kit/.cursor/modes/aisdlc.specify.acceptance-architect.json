@@ -1,0 +1,37 @@
+{
+  "name": "aisdlc.specify.acceptance-architect",
+  "description": "Specify · Acceptance Architect — rédige les critères d'acceptation Gherkin.",
+  "model": "claude-sonnet-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.specify.acceptance-architect"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": false,
+    "run_terminal_cmd": false,
+    "web_search": false
+  },
+  "mcp": {
+    "allowed_servers": ["atlassian", "github", "figma"],
+    "allowed_tools": [
+      "atlassian:get_issue",
+      "github:get_file_contents",
+      "figma:get_metadata"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/specify/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "github_write": false,
+    "figma_write": false,
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

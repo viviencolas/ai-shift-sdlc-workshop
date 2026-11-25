@@ -1,0 +1,48 @@
+opportunity:
+  id: checkout-mobile-abandon
+  title: "Abandon mobile sur saisie d'adresse de livraison"
+  parent_jira_key: AISDLC-123
+  problem: >
+    Sur mobile, le taux d'abandon au checkout est 3,4× supérieur à celui du desktop sur les 90 derniers jours.
+    L'autocomplete d'adresse (Google Places) échoue silencieusement sur certains codes postaux ruraux et pour
+    les adresses en Corse et DOM-TOM. L'utilisateur reste bloqué sur un champ vide sans fallback de saisie manuelle.
+    Signal confirmé par le support (+42 % de tickets « impossible de valider l'adresse »), le NPS mobile
+    (-14 points vs desktop) et 4 interviews utilisateurs menées la semaine du 2026-11-03.
+  target_user: "Acheteur mobile, 25-55 ans, commande ponctuelle, hors métropoles"
+  evidence:
+    - source_id: ZDK-8821
+      kind: support_ticket
+      excerpt: "Je n'arrive pas à aller au bout, l'adresse ne se complète jamais, j'ai dû commander par téléphone."
+      date: "2026-11-04"
+    - source_id: ZDK-8847
+      kind: support_ticket
+      excerpt: "Autocomplete marche pas en Haute-Loire, aucune alternative pour taper mon adresse à la main."
+      date: "2026-11-05"
+    - source_id: "chat://aisdlc-feedback/2026-11-07/Th42"
+      kind: chat_verbatim
+      excerpt: "L'app propose plus rien quand Places plante, c'est un cul de sac."
+      date: "2026-11-07"
+    - source_id: INT-2026-11-03-NORA
+      kind: interview
+      excerpt: "J'ai mis 11 minutes avant d'abandonner, j'ai pas compris pourquoi ça marchait pas."
+      date: "2026-11-03"
+    - source_id: NPS-W45
+      kind: nps
+      excerpt: "Mobile: -14 pts vs desktop, 3 verbatims mentionnent l'adresse"
+      date: "2026-11-08"
+  pains:
+    - "Je n'arrive pas à valider mon adresse de livraison en mobile."
+    - "Je ne comprends pas pourquoi l'autocomplete ne me propose rien."
+    - "Je n'ai aucun moyen de forcer la saisie manuelle."
+  jobs_to_be_done:
+    - "Quand je commande depuis mon téléphone, je veux pouvoir saisir une adresse même si l'autocomplete est en panne, pour que je puisse finir ma commande sans appeler le support."
+  rice:
+    reach: 18500
+    impact: 2
+    confidence: 0.7
+    effort_days: 4
+    score: 6475.0
+  open_questions:
+    - "Confirmer la couverture réelle de Google Places sur les DOM-TOM avec l'équipe Platform."
+  owner: "Ilyasse EL KHAIRA"
+  status: selected_for_specify

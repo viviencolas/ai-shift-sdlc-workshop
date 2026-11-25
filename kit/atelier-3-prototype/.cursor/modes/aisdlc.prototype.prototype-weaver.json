@@ -1,0 +1,42 @@
+{
+  "name": "aisdlc.prototype.prototype-weaver",
+  "description": "Prototype · Prototype Weaver — pose les interactions cliquables Figma + lien partage.",
+  "model": "claude-sonnet-5-5-medium",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.prototype.prototype-weaver"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": false,
+    "run_terminal_cmd": false,
+    "web_search": false
+  },
+  "mcp": {
+    "allowed_servers": ["atlassian", "figma"],
+    "allowed_tools": [
+      "atlassian:get_issue",
+      "atlassian:add_issue_comment",
+      "figma:get_file",
+      "figma:get_metadata",
+      "figma:create_prototype_connection",
+      "figma:get_share_link"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/prototype/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "jira_write_actions": ["add_comment"],
+    "github_write": false,
+    "figma_write": true,
+    "figma_files_writable": ["AISDLC — Prototypes"],
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

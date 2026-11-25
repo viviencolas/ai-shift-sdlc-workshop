@@ -1,0 +1,51 @@
+{
+  "$comment": "AI SDLC — MCP config partagée (5 ateliers). Les valeurs ${...} proviennent de l'environnement local du participant (voir README §MCP). Aucun secret en clair ici.",
+  "mcpServers": {
+    "atlassian": {
+      "$comment": "Jira + Confluence. Project JIRA ciblé: AISDLC. Space Confluence: AISDLC.",
+      "command": "npx",
+      "args": ["-y", "@atlassian/mcp-server-atlassian"],
+      "env": {
+        "ATLASSIAN_SITE_URL": "${env:ATLASSIAN_SITE_URL}",
+        "ATLASSIAN_EMAIL": "${env:ATLASSIAN_EMAIL}",
+        "ATLASSIAN_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}",
+        "ATLASSIAN_DEFAULT_PROJECT": "AISDLC",
+        "ATLASSIAN_DEFAULT_CONFLUENCE_SPACE": "AISDLC"
+      }
+    },
+
+    "github": {
+      "$comment": "GitHub — repo autorisé : aisdlc-sandbox. Push sur main protégé côté repo (branch protection).",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}",
+        "GITHUB_ALLOWED_REPOS": "aisdlc-sandbox"
+      }
+    },
+
+    "figma": {
+      "$comment": "Figma — team AI SDLC. File DS en lecture seule. Nécessite un Figma Dev Mode + Plugin API token.",
+      "command": "npx",
+      "args": ["-y", "@figma/mcp-server-figma"],
+      "env": {
+        "FIGMA_API_TOKEN": "${env:FIGMA_API_TOKEN}",
+        "FIGMA_DEFAULT_TEAM": "AI SDLC",
+        "FIGMA_WRITABLE_FILES": "AISDLC — Prototypes",
+        "FIGMA_READONLY_FILES": "AI SDLC DS"
+      }
+    },
+
+    "google-chat": {
+      "$comment": "Google Chat via bridge Zapier MCP (V1). Scopes: read #aisdlc-feedback*, write #aisdlc-standup. Remplacer par un connecteur Workspace officiel dès que disponible.",
+      "command": "npx",
+      "args": ["-y", "@zapier/mcp-bridge"],
+      "env": {
+        "ZAPIER_MCP_URL": "${env:ZAPIER_MCP_URL}",
+        "ZAPIER_MCP_API_KEY": "${env:ZAPIER_MCP_API_KEY}",
+        "GOOGLE_CHAT_READ_SPACES": "#aisdlc-feedback,#aisdlc-feedback-demo",
+        "GOOGLE_CHAT_WRITE_SPACES": "#aisdlc-standup"
+      }
+    }
+  }
+}

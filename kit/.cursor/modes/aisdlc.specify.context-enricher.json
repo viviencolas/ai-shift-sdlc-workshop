@@ -1,0 +1,43 @@
+{
+  "name": "aisdlc.specify.context-enricher",
+  "description": "Specify · Context Enricher — ancre chaque US dans le code et le design (lecture GitHub + Figma).",
+  "model": "claude-opus-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.specify.context-enricher"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": true,
+    "run_terminal_cmd": true,
+    "web_search": false
+  },
+  "shell_allowlist": ["git log", "git diff", "git grep", "git status"],
+  "mcp": {
+    "allowed_servers": ["atlassian", "github", "figma"],
+    "allowed_tools": [
+      "atlassian:search_issues",
+      "atlassian:get_issue",
+      "github:search_code",
+      "github:get_file_contents",
+      "github:get_git_tree",
+      "figma:get_file",
+      "figma:get_metadata"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/specify/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "github_write": false,
+    "github_repos": ["aisdlc-sandbox"],
+    "figma_write": false,
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

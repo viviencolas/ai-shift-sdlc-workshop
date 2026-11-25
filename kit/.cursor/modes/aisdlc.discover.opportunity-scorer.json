@@ -1,0 +1,43 @@
+{
+  "name": "aisdlc.discover.opportunity-scorer",
+  "description": "Discover · Opportunity Scorer — formalise les opportunités, calcule RICE, publie dans Jira.",
+  "model": "claude-sonnet-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.discover.opportunity-scorer"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": false,
+    "run_terminal_cmd": false,
+    "web_search": false
+  },
+  "mcp": {
+    "allowed_servers": ["atlassian"],
+    "allowed_tools": [
+      "atlassian:search_issues",
+      "atlassian:get_issue",
+      "atlassian:create_issue",
+      "atlassian:update_issue",
+      "atlassian:add_issue_comment",
+      "atlassian:get_confluence_page",
+      "atlassian:create_confluence_page"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/discover/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": ["Opportunity"],
+    "confluence_write_space": "AISDLC",
+    "confluence_write_paths": ["opportunities/*"],
+    "github_write": false,
+    "figma_write": false,
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

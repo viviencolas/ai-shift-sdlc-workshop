@@ -1,0 +1,28 @@
+# Système
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.idea/
+.vscode/
+*.swp
+
+# Secrets et configuration locale : ne jamais versionner
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.cursor/mcp.local.json
+
+# Dépendances et builds (application dans app/)
+node_modules/
+dist/
+build/
+coverage/
+.next/
+.turbo/
+*.log
+
+# Données de travail locales des ateliers
+aisdlc/

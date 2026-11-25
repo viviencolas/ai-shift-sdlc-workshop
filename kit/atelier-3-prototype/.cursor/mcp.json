@@ -1,0 +1,27 @@
+{
+  "$comment": "AI SDLC Atelier 3 · Prototype — MCP minimal (Jira lecture/commentaire + Figma). Secrets via variables d'environnement uniquement.",
+  "mcpServers": {
+    "atlassian": {
+      "$comment": "Jira Project AISDLC — lecture Stories + commentaire [Prototype] sur le ticket.",
+      "command": "npx",
+      "args": ["-y", "@atlassian/mcp-server-atlassian"],
+      "env": {
+        "ATLASSIAN_SITE_URL": "${env:ATLASSIAN_SITE_URL}",
+        "ATLASSIAN_EMAIL": "${env:ATLASSIAN_EMAIL}",
+        "ATLASSIAN_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}",
+        "ATLASSIAN_DEFAULT_PROJECT": "AISDLC"
+      }
+    },
+    "figma": {
+      "$comment": "Team AI SDLC — écriture sur AISDLC — Prototypes ; lecture seule AI SDLC DS.",
+      "command": "npx",
+      "args": ["-y", "@figma/mcp-server-figma"],
+      "env": {
+        "FIGMA_API_TOKEN": "${env:FIGMA_API_TOKEN}",
+        "FIGMA_DEFAULT_TEAM": "AI SDLC",
+        "FIGMA_WRITABLE_FILES": "AISDLC — Prototypes",
+        "FIGMA_READONLY_FILES": "AI SDLC DS"
+      }
+    }
+  }
+}

@@ -1,0 +1,839 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Atelier 02 · Specify · Support de la deuxième partie (0:35–2:15) | Agentic SDLC</title><meta name="description" content="Support animateur de la deuxième partie de l’atelier Specify : lancement des exercices 1 à 4, bilan, passation au jour 3 et clôture."><meta name="theme-color" content="#3c3c3a"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233c3c3a'/%3E%3Ctext x='10' y='46' font-family='Arial' font-size='40' font-weight='bold' fill='%23f8485e'%3Eai%3C/text%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><style>
+/* Agentic SDLC lab | Devoteam brand styling, repris du guide participant J2. */
+:root{
+  --bg:#efeeee;--text:#3c3c3a;--muted:#62625f;--line:#e3e0df;--panel:#fff;--code:#333331;
+  --poppy:#f8485e;--poppy2:#e63e53;--poppy-light:#fca2ae;--poppy-lighter:#fddade;--dark:#3c3c3a;
+  --shadow-sm:0 4px 18px rgba(60,60,58,.035);--shadow-md:0 14px 38px rgba(60,60,58,.07);--shadow-lg:0 28px 70px rgba(60,60,58,.13);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:#2e2e2c;color:var(--text);font-family:'Montserrat','Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body ::selection{background:var(--poppy-lighter);color:var(--dark)}
+code,.mono{font-family:ui-monospace,'SFMono-Regular',Consolas,'Liberation Mono',monospace}
+:focus-visible{outline:3px solid var(--poppy);outline-offset:3px}
+
+/* Scène 16:9 mise à l'échelle */
+#viewport{position:fixed;left:0;right:0;top:0;bottom:48px;display:flex;align-items:center;justify-content:center}
+body.notes-open #viewport{bottom:calc(48px + var(--notes-h,32vh))}
+#scaler{position:relative;flex:0 0 auto}
+#deck{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;background:white;border-radius:6px;overflow:hidden;box-shadow:var(--shadow-lg)}
+.slide.active{display:flex}
+
+/* En-tête et pied de slide, dans l'esprit de la topbar du guide */
+.s-top{flex:0 0 66px;display:flex;align-items:center;gap:16px;padding:0 56px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.98)}
+.brand-logo{display:block;height:34px;width:auto}
+.brand-divider{display:inline-block;height:24px;width:2px;border-radius:2px;background:var(--poppy)}
+.brand-program{color:var(--dark);font-size:13px;font-weight:700;letter-spacing:-.035em;white-space:nowrap}
+.brand-program small{color:#787875;font-weight:400;font-size:12px;letter-spacing:0}
+.s-section{margin-left:auto;display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--dark);border:1px solid #d9d7d5;border-radius:60px;white-space:nowrap}
+.s-section b{color:var(--poppy);font-weight:700}
+.s-body{flex:1 1 auto;min-height:0;padding:30px 56px 18px;display:flex;flex-direction:column;overflow:hidden}
+.s-foot{flex:0 0 40px;display:flex;align-items:center;gap:14px;padding:0 56px;border-top:1px solid var(--line);font-size:11px;color:#787875;font-weight:500;background:#faf9f9}
+.s-foot .s-num{margin-left:auto;font-weight:700;color:var(--dark);letter-spacing:.04em}
+.s-foot .s-num span{color:var(--poppy)}
+
+/* Typographie */
+.eyebrow{color:var(--poppy);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin:0 0 8px}
+h2{margin:0 0 6px;font-size:32px;font-weight:700;letter-spacing:-.045em;line-height:1.2;color:var(--dark)}
+h2 .em{color:var(--poppy)}
+.lead{margin:0 0 20px;font-size:16px;color:var(--muted);max-width:980px;line-height:1.55}
+h3{margin:0 0 6px;font-size:16px;font-weight:700;letter-spacing:-.025em;color:var(--dark);line-height:1.3}
+p{margin:0}
+strong{font-weight:700;color:var(--dark)}
+.small{font-size:12px;color:var(--muted)}
+.ic{background:#fae8eb;color:#9f2a3b;border-radius:6px;padding:2px 6px;font-size:.86em;white-space:nowrap}
+ul.clean{margin:0;padding-left:20px}
+ul.clean li{margin:4px 0}
+ul.clean li::marker{color:var(--poppy)}
+
+/* Briques visuelles du guide */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.card{background:white;border:1px solid var(--line);border-radius:15px;padding:18px 20px;box-shadow:var(--shadow-sm);min-width:0}
+.card.soft{background:#f7f6f6}
+.card.hl{border-color:var(--poppy);box-shadow:0 12px 30px rgba(248,72,94,.14)}
+.card .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#757470;margin-bottom:6px}
+.card.hl .tag{color:var(--poppy)}
+.notebox{border:1px solid #f1c1c8;border-left:4px solid var(--poppy);background:#fff7f8;padding:14px 20px;border-radius:15px;font-size:14px;box-shadow:var(--shadow-sm)}
+.expected{border:1px solid #d9d7d5;border-left:4px solid var(--dark);background:#f7f6f6;padding:12px 18px;border-radius:15px;font-size:13.5px}
+.expected>strong{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dark);margin-bottom:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-block;border-radius:12px;padding:5px 11px;font-size:12px;font-weight:600;line-height:1.5;background:#f7f6f6;border:1px solid var(--line);color:var(--dark)}
+.label{display:inline-block;font-family:ui-monospace,'SFMono-Regular',Consolas,monospace;font-size:12px;font-weight:600;border-radius:6px;padding:2px 8px}
+.label.prete{background:#e5f3ea;color:#22663d}
+.label.brouillon{background:#fae8eb;color:#9f2a3b}
+table{border-spacing:0;border-collapse:separate;border-radius:15px;overflow:hidden;border:1px solid var(--line);background:white;width:100%;font-size:14px;line-height:1.5;box-shadow:var(--shadow-sm)}
+th{background:#efeeee;color:var(--dark);font-weight:700;text-align:left}
+th,td{padding:8px 13px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+tr:last-child td{border-bottom:0}
+tr:nth-child(even) td{background:#faf9f9}
+td strong{white-space:nowrap}td.k{font-weight:700;color:var(--poppy);white-space:nowrap}
+.codewrap{background:var(--dark);border:1px solid #5a5956;border-radius:15px;overflow:hidden;box-shadow:var(--shadow-md);min-width:0}
+.codebar{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px 0 18px;background:#474745;border-bottom:1px solid #646360;color:#e7e4e3;font:600 11.5px 'Montserrat','Segoe UI',sans-serif}
+.codebar .n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--poppy);color:white;font-size:11px;font-weight:700}
+.codebar .copy{margin-left:auto;background:var(--poppy);border:1px solid var(--poppy);color:white;padding:3px 12px;border-radius:60px;font:700 11px 'Montserrat',sans-serif;cursor:pointer}
+.codebar .copy:hover{background:var(--poppy2)}
+.codewrap pre{margin:0;padding:14px 18px;color:#fff;font-size:13.5px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.codewrap pre .kw{color:var(--poppy-light);font-weight:700}
+.codewrap pre .cm{color:#a9a7a3}
+.codewrap pre .ph{color:#ffd5db;background:rgba(248,72,94,.28);border-radius:4px;padding:0 3px}
+
+/* Slides sombres : le « hero » du guide */
+.slide.dark{background:var(--dark);color:white;isolation:isolate}
+.slide.dark::before{content:'';position:absolute;inset:auto -11% -110px 30%;height:240px;background:radial-gradient(ellipse at 50% 45%,rgba(248,72,94,.28),rgba(248,72,94,0) 65%);filter:blur(30px);pointer-events:none;z-index:-1}
+.slide.dark::after{content:'';position:absolute;top:24%;right:-16%;width:70%;height:300px;border-top:3px solid rgba(248,72,94,.68);border-radius:50%;transform:rotate(-18deg);box-shadow:0 -5px 26px 3px rgba(248,72,94,.25);pointer-events:none;z-index:-1}
+.slide.dark .s-top{background:transparent;border-bottom-color:rgba(255,255,255,.14)}
+.slide.dark .brand-logo{background:white;border-radius:9px;padding:3px 9px;height:38px}
+.slide.dark .brand-program{color:white}.slide.dark .brand-program small{color:#d6d4d2}
+.slide.dark .s-section{color:white;border-color:rgba(255,255,255,.3)}
+.slide.dark .s-foot{background:transparent;border-top-color:rgba(255,255,255,.14);color:#d6d4d2}
+.slide.dark .s-foot .s-num{color:white}
+.slide.dark .eyebrow{color:var(--poppy-light)}
+.slide.dark h1,.slide.dark h2,.slide.dark h3,.slide.dark strong{color:white}
+.slide.dark .lead{color:#f5f4f3}
+.slide.dark .chip{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);color:white}
+.hero{flex:1;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(250px,.7fr);gap:40px;align-items:center}
+.hero h1{margin:0 0 20px;font-size:54px;line-height:1.1;font-weight:300;color:white;letter-spacing:-.047em}
+.hero h1 .hero-emphasis{color:var(--poppy-light);font-weight:700}
+.hero p{max-width:640px;color:#f5f4f3;font-size:16px;line-height:1.6}
+.hero-aside{display:flex;flex-direction:column;gap:12px}
+.hero-metric{padding:22px;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.82);backdrop-filter:blur(13px);border-radius:15px;color:var(--dark)}
+.hero-metric .metric-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--dark)}
+.hero-metric strong{display:block;font-size:30px;line-height:1.15;font-weight:800;letter-spacing:-.05em;color:var(--dark)!important;margin:6px 0 4px}
+.hero-metric .metric-caption{display:block;font-size:12px;font-weight:500;color:var(--dark)}
+.hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hero-mini{border-radius:15px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:white;padding:14px}
+.hero-mini strong{display:block;font-size:24px;font-weight:800;line-height:1.2;letter-spacing:-.04em}
+.hero-mini span{display:block;font-size:12px;color:#f8f6f6;line-height:1.45}
+
+/* Composants propres au support */
+.timeline{display:flex;height:46px;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin:4px 0 8px}
+.timeline div{display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#757470;background:#f7f6f6;border-right:1px solid white;text-align:center;line-height:1.2;padding:0 2px}
+.timeline div.on{background:var(--poppy);color:white}
+.timeline div.pause{background:var(--poppy-lighter);color:#9f2a3b}
+.tl-legend{display:flex;justify-content:space-between;font-size:11px;color:#787875;font-weight:600}
+.week{display:grid;grid-template-columns:1fr 26px 1.15fr 26px 1fr;align-items:stretch;gap:8px}
+.arrow{display:flex;align-items:center;justify-content:center;color:var(--poppy);font-size:24px;font-weight:700}
+.who{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;background:var(--dark);color:white;flex:0 0 auto}
+.card.hl .avatar{background:var(--poppy)}
+.who small{display:block;font-size:11px;color:#757470;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.pipe{display:flex;align-items:stretch;gap:0}
+.pipe .st{flex:1;background:white;border:1px solid var(--line);border-radius:15px;padding:18px 15px;box-shadow:var(--shadow-sm);min-width:0}
+.pipe .st.po{background:var(--dark);color:white;border-color:var(--dark)}
+.pipe .st.po h3,.pipe .st.po strong{color:white}
+.pipe .st.po .tag{color:var(--poppy-light)}
+.pipe .st .tag{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--poppy);margin-bottom:4px}
+.pipe .st p{font-size:14px;line-height:1.5}.pipe .st h3{font-size:17px}
+.pipe .ar{flex:0 0 22px;display:flex;align-items:center;justify-content:center;color:var(--poppy);font-weight:800;font-size:18px}
+.brick .file{display:block;font-family:ui-monospace,'SFMono-Regular',Consolas,monospace;font-size:11px;color:#9f2a3b;background:#fae8eb;border-radius:6px;padding:3px 7px;margin:6px 0 10px;overflow-wrap:anywhere}
+.brick p{font-size:14px;line-height:1.5}
+.brick .dlg{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);font-size:12px;color:var(--muted)}
+.brick .dlg b{color:var(--dark)}
+.ticket{border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:var(--shadow-md);background:white}
+.ticket-head{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--dark);color:white}
+.ticket-key{background:#8b8a86;color:white;border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700}
+.ticket-head strong{color:white;font-size:15px}
+.ticket-type{margin-left:auto;font-size:12px;color:#e7e4e3}
+.ticket-body{padding:20px 24px;font-size:17px;line-height:1.6}
+.ticket-body .ac{margin-top:14px;font-size:15px;color:var(--muted)}
+.ticket-body mark{background:#fddade;color:inherit;border-radius:4px;padding:0 3px}
+.ch{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.ch .card{padding:16px 16px}
+.ch .q{font-size:15px;font-weight:600;color:var(--dark);line-height:1.4;margin-bottom:6px}
+.ch .a{font-size:13.5px;color:var(--muted);line-height:1.45}
+.ch .a b{color:#9f2a3b}
+.sec{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--poppy);margin:0 0 3px}
+.kv{font-size:14.5px;line-height:1.5}
+.kv p{margin:0 0 7px}
+.dor{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;counter-reset:dor}
+.dor div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.4;padding:9px 11px;border-radius:10px;background:#faf9f9;border:1px solid var(--line)}
+.dor div b{flex:0 0 26px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--dark);color:white;font-size:11px}
+.dor div.key b{background:var(--poppy)}
+.steps{display:flex;flex-direction:column;gap:7px}
+.stepl{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:11px 16px;border:1px solid var(--line);border-radius:12px;background:white;font-size:14.5px;line-height:1.4}
+.stepl .n{width:26px;height:26px;border-radius:50%;background:var(--poppy);color:white;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.stepl .t{font-size:11px;font-weight:700;color:#757470;white-space:nowrap}
+.stepl small{display:block;color:var(--muted);font-size:12.5px}
+.epic-card{border:1px solid var(--line);border-radius:15px;background:white;box-shadow:var(--shadow-sm);overflow:hidden}
+.epic-head{display:flex;align-items:center;gap:10px;padding:12px 18px;background:var(--dark);color:white}
+.epic-key{background:var(--poppy);color:white;border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700}
+.epic-head strong{color:white;font-size:14px}
+.epic-grid{padding:4px 18px 12px;font-size:13px;line-height:1.5}
+.epic-grid h4{margin:10px 0 3px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dark)}
+.epic-grid ul{margin:0;padding-left:18px}
+.epic-grid li::marker{color:var(--poppy)}
+.timer{display:inline-flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+.timer .tv{font-size:96px;font-weight:800;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.timer .th{font-size:12px;font-weight:600;opacity:.8}
+.timer.small-t .tv{font-size:40px}
+.timer.done .tv{color:var(--poppy)}
+.checklist{display:flex;flex-direction:column;gap:10px}
+.checklist div{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-radius:15px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);font-size:15px;line-height:1.45}
+.checklist div b{flex:0 0 28px;height:28px;border-radius:50%;background:var(--poppy);color:white;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ex-head{display:flex;align-items:flex-end;gap:20px;margin-bottom:6px}
+.ex-head>div:first-child{flex:1;min-width:0}
+.ex-head h2{margin:0}
+.tpill{flex:0 0 auto;display:inline-flex;align-items:center;gap:12px;background:var(--dark);color:white;border-radius:15px;padding:8px 16px 8px 14px;cursor:pointer;user-select:none;box-shadow:var(--shadow-md)}
+.tpill .tl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--poppy-light);line-height:1.3}
+.tpill .tv{font-size:34px;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.tpill.running{box-shadow:0 0 0 3px var(--poppy),var(--shadow-md)}
+.tpill.done .tv{color:var(--poppy)}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.scale div{border:1px solid var(--line);border-radius:15px;padding:14px 12px;text-align:center;background:#faf9f9}
+.scale b{display:block;font-size:28px;font-weight:800;letter-spacing:-.04em;color:var(--dark)}
+.scale span{display:block;font-size:14px;font-weight:600;color:var(--muted)}
+.scale small{display:block;margin-top:4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.scale .mid{border-color:var(--dark)}
+.scale .warn{background:#fff7f8;border-color:var(--poppy-light)}.scale .warn small{color:#c12a40}
+.scale .stop{background:var(--poppy);border-color:var(--poppy)}.scale .stop b,.scale .stop span,.scale .stop small{color:white}
+.notes{display:none}
+
+/* Barre de contrôle, panneau de notes, aide */
+#bar{position:fixed;left:0;right:0;bottom:0;height:48px;display:flex;align-items:center;gap:10px;padding:0 18px;background:#262624;color:#d6d4d2;font-size:12px;z-index:20}
+#bar button{font:600 12px 'Montserrat','Segoe UI',sans-serif;color:white;background:transparent;border:1px solid #5a5956;border-radius:60px;padding:6px 14px;cursor:pointer;min-height:32px}
+#bar button:hover{background:#3c3c3a}
+#bar button.on{background:var(--poppy);border-color:var(--poppy)}
+#bar .count{font-weight:700;color:white;min-width:62px;text-align:center}
+#bar .hint{margin-left:auto;color:#a9a7a3}
+#bar .hint kbd{font:600 11px ui-monospace,monospace;border:1px solid #5a5956;border-radius:5px;padding:1px 6px;color:white;margin:0 2px}
+#progress{position:fixed;left:0;bottom:48px;height:3px;background:var(--poppy);z-index:21;transition:width .2s ease-out}
+#notes-panel{position:fixed;left:0;right:0;bottom:48px;height:var(--notes-h,32vh);background:#333331;color:#f5f4f3;border-top:3px solid var(--poppy);padding:16px 28px 18px;overflow:auto;display:none;z-index:19;font-size:15px;line-height:1.6}
+body.notes-open #notes-panel{display:block}
+#notes-panel .nh{display:flex;gap:12px;align-items:center;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--poppy-light);margin-bottom:8px}
+#notes-panel .nh span{color:#a9a7a3;font-weight:600}
+#notes-panel ul{margin:4px 0;padding-left:22px}
+#notes-panel li{margin:3px 0}
+#notes-panel li::marker{color:var(--poppy)}
+#notes-panel strong{color:white}
+#notes-panel code{background:#4a4a47;border-radius:5px;padding:1px 5px;font-size:13px}
+#help{position:fixed;inset:0;background:rgba(30,30,28,.72);display:none;align-items:center;justify-content:center;z-index:40}
+#help.show{display:flex}
+#help .box{background:white;border-radius:20px;padding:26px 32px;min-width:420px;box-shadow:var(--shadow-lg);color:var(--dark)}
+#help h3{font-size:18px;margin-bottom:12px}
+#help table{box-shadow:none}
+#toast{position:fixed;bottom:66px;right:22px;background:#3c3c3a;color:white;border:1px solid #777;padding:10px 16px;border-radius:12px;font-size:12px;z-index:45;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:1}
+body.fs #bar{opacity:0;transition:opacity .3s}
+body.fs #bar:hover{opacity:1}
+@media print{
+  html,body{overflow:visible;height:auto;background:white}
+  #bar,#progress,#notes-panel,#help,#toast{display:none!important}
+  #viewport{position:static;display:block}
+  #scaler{width:auto!important;height:auto!important}
+  #deck{position:static;transform:none!important;width:1280px;height:auto}
+  .slide{position:relative;display:flex!important;width:1280px;height:720px;break-after:page;box-shadow:none;border-radius:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{size:1280px 720px;margin:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style></head><body>
+
+<div id="viewport"><div id="scaler"><div id="deck" role="region" aria-roledescription="présentation" aria-label="Atelier 02 · Specify · deuxième partie">
+
+<!-- 1 · Titre -->
+<section class="slide dark" data-section="Ouverture" data-time="00:35">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Semaine AI SDLC</small></span><span class="s-section">Partie 2 · <b>0:35 – 2:15</b></span></header>
+<div class="s-body"><div class="hero">
+<div>
+<div class="eyebrow">Atelier 02 / Specify / Pratique et bilan</div>
+<h1>À vous de construire,<br><span class="hero-emphasis">à vous de décider.</span></h1>
+<p>Quatre exercices guidés pour bâtir votre pipeline sur <strong>votre</strong> epic du jour 1 : la rule et la skill, le refinement, le relecteur et le publieur, puis la publication en parallèle. Dix minutes de bilan pour finir.</p>
+<div class="chips" style="margin-top:26px"><span class="chip">Mardi 8 décembre 2026</span><span class="chip">90 min de pratique</span><span class="chip">Individuel · à distance</span><span class="chip">Votre epic</span></div>
+</div>
+<div class="hero-aside">
+<div class="hero-metric"><span class="metric-label">Animateur</span><strong>Vivien COLAS</strong><span class="metric-caption">Jour 2 de la semaine AI SDLC</span></div>
+<div class="hero-meta"><div class="hero-mini"><strong>04</strong><span>exercices guidés</span></div><div class="hero-mini"><strong>05</strong><span>briques à partager</span></div></div>
+</div>
+</div></div>
+<footer class="s-foot"><span>Agentic SDLC · AI Shift J2 · Specify</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>Ce support prend le relais à la fin de l’exercice 0 (00:37). Si l’exercice 0 déborde, ne pas attendre : aider les retardataires en parallèle via le chat.</li>
+<li>Rappeler : chacun travaille sur <strong>une de ses epics du jour 1</strong>, jamais l’epic de démonstration ni l’epic d’un collègue.</li>
+<li>Garder ce support en partage d’écran pendant la pratique : chaque slide de lancement reste affichée avec son minuteur (T).</li>
+</ul></aside>
+</section>
+
+<!-- 2 · Feuille de route -->
+<section class="slide" data-section="Ouverture" data-time="00:37">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Feuille de route · <b>00:37–02:15</b></span></header>
+<div class="s-body">
+<div class="eyebrow">90 minutes de pratique, 10 minutes de bilan</div>
+<h2>Quatre exercices, une brique après l’autre</h2>
+<p class="lead">Suivez les étapes du guide dans l’ordre. Chaque exercice s’appuie sur le précédent.</p>
+<div class="timeline" aria-label="Minutage de la deuxième partie">
+<div class="pause" style="flex:5">Ctx</div><div class="pause" style="flex:15">US vague</div><div class="pause" style="flex:10">Démo</div><div class="pause" style="flex:5">Pause</div><div class="pause" style="flex:2">0</div><div class="on" style="flex:23">Ex. 1 · rule + skill</div><div class="on" style="flex:22">Ex. 2 · affiner</div><div class="on" style="flex:23">Ex. 3 · relire + aperçu</div><div class="on" style="flex:20">Ex. 4 · /publier</div><div class="on" style="flex:10">Bilan</div>
+</div>
+<div class="tl-legend"><span>00:00</span><span>00:37</span><span>01:00</span><span>01:22</span><span>01:45</span><span>02:05</span><span>02:15</span></div>
+<div class="grid g2" style="margin-top:20px;grid-template-columns:1.25fr 1fr;align-items:start">
+<table><thead><tr><th>Repère</th><th>Exercice</th><th>Durée</th></tr></thead><tbody>
+<tr><td class="k">00:37</td><td>Ex. 1 · Créer la rule us-redaction et la skill refinement-us</td><td>23 min</td></tr>
+<tr><td class="k">01:00</td><td>Ex. 2 · Affiner son epic avec le PO</td><td>22 min</td></tr>
+<tr><td class="k">01:22</td><td>Ex. 3 · us-reviewer et jira-story-publisher, relire, GO, aperçu</td><td>23 min</td></tr>
+<tr><td class="k">01:45</td><td>Ex. 4 · /publier en parallèle, relancer sans doublon</td><td>20 min</td></tr>
+<tr><td class="k">02:05</td><td>Bilan et partage des briques</td><td>10 min</td></tr>
+</tbody></table>
+<div class="grid" style="gap:12px">
+<div class="notebox"><strong>Bloqué ?</strong> Levez la main ou écrivez dans le canal de questions, en indiquant <strong>l’étape, le titre de votre epic et le message d’erreur</strong>. Jamais de jeton ni de secret dans le chat.</div>
+<div class="expected"><strong>En avance ?</strong><p>Les bonus du guide se font dans le temps restant, sans décaler le bilan.</p></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>30 secondes, puis enchaîner directement sur l’exercice 1.</li>
+<li>Priorités d’aide : traiter d’abord les blocages d’accès (MCP, epic introuvable), puis les questions de contenu.</li>
+<li>Ne pas valider les cases à la place des participants : cocher dans le guide est un repère personnel, pas une validation automatique.</li>
+</ul></aside>
+</section>
+
+<!-- 3 · Ex1 (1/2) -->
+<section class="slide" data-section="Exercice 1" data-time="00:37">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 1 · <b>00:37–01:00</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 1 (1/2) · 23 minutes · individuel</div><h2>Créer la rule et la skill <span class="em">refinement-us</span></h2></div><div class="tpill timer" data-timer="1380" data-timer-id="ex1" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">23:00</span></div></div>
+<p class="lead" style="margin-bottom:14px"><strong>Objectif :</strong> poser une consigne permanente de rédaction, puis apprendre à la skill à challenger votre découpage, sans inventer les réponses ni écrire dans Jira.</p>
+<div class="grid" style="grid-template-columns:1fr 1.15fr;gap:18px;align-items:start">
+<div class="steps">
+<div class="stepl"><span class="n">1</span><span><strong>Poser les six fichiers de référence</strong><small>.cursor/skills/refinement-us/references/ · DoR, DoD, template, grille, bonne et mauvaise US</small></span><span class="t">5 min</span></div>
+<div class="stepl"><span class="n">2</span><span><strong>Créer la rule us-redaction</strong><small>.cursor/rules/us-redaction.mdc · extension .mdc obligatoire</small></span><span class="t">4 min</span></div>
+<div class="stepl"><span class="n">3</span><span><strong>Créer le squelette SKILL.md</strong><small>champ name identique au nom du dossier</small></span><span class="t">2 min</span></div>
+<div class="stepl"><span class="n">4</span><span><strong>Compléter la skill avec Cursor</strong><small>prompt de construction sur la slide suivante</small></span><span class="t">7 min</span></div>
+<div class="stepl"><span class="n">5</span><span><strong>Tester le démarrage</strong>, relire les limites</span><span class="t">5 min</span></div>
+</div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar">Étape 2 · test de la rule, dans un nouveau chat Agent<button class="copy" type="button">Copier</button></div><pre>Rédige un critère d'acceptation Gherkin pour la règle suivante :
+« un lecteur seul peut commenter une page ».
+Ajoute aussi un objectif chiffré d'adoption pour cette fonctionnalité.</pre></div>
+<div class="expected"><strong>Attendu</strong><p>Un critère au texte français et aux mots-clés anglais. <strong>Aucun chiffre sorti de nulle part</strong> : l’agent refuse d’inventer l’objectif ou le note « à clarifier ».</p></div>
+<div class="card soft" style="padding:12px 16px"><p style="font-size:13.5px"><strong>Rule ou skill ?</strong> La rule (<span class="ic">alwaysApply: true</span>) s’ajoute à chaque conversation. On appelle la skill pour une tâche en plusieurs étapes : le refinement.</p></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Lancer le minuteur (T)</strong> : 23 min, partagé avec la slide suivante.</li>
+<li><strong>Point de contrôle à 00:46</strong> (fin de l’étape 2) : demander un 👍 si la rule refuse l’objectif chiffré. Sinon : extension <code>.mdc</code>, dossier <code>.cursor/rules/</code>, en-tête <code>alwaysApply: true</code> entre deux lignes <code>---</code>, puis nouveau chat.</li>
+<li>Erreur fréquente à l’étape 1 : un nom de fichier approximatif dans <code>references/</code>. L’arborescence du kit fait foi.</li>
+<li>Rappeler que l’Estimation IA est la seule exception aux chiffres : la rule autorise le barème indicatif XS à XL du template.</li>
+</ul></aside>
+</section>
+
+<!-- 4 · Ex1 (2/2) -->
+<section class="slide" data-section="Exercice 1" data-time="00:48">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAABlCAMAAAALWMqpAAAAYFBMVEX///////7//v7+/v7//f39/f38/Pz7/Pv79/jt5ufaztDJtLjQk5z5YnVxcHT3UWVZWF1YV1xXVltWVVtWVVpVVVlTUldPTVP4SmD4SV/4SF/4SF74RFr4PlV0RlBIR0wTHDolAAAM2ElEQVR42u2dibKrOA5AaQwEzBJgEpYOqfz/X44Wb4BJSO7tN0tQVfe7gDHmRJJlYUMQHHLI/46EkZWDxtvswnC2I8RdB5id8PiPVBrJ1LGD4U56mSzKsrwbmWArl+nB8CU+Be9M1AYjI2EEiKiKh0d8gi+VBcCbiN14s0IYp+k+KIYHrbUgvuI8oeKNLjsr4zjcgGEhwYoPQ16qX4j47tM4+OFphsNwA1uW0aGEK/VDfM/pGXOe7mV6KOHc+2XlTnyMEAz58IQz9QMke/ERwtu9zA6Cmh+p3+0tGYf7reC45+vtN5Dn99TPKGERHkoIBIq31c8o4WHGxO8D9VNKeD9/O0Hi90rTrKwITl9OcA+/22TldhB8n99QWhkOgm/b71SmVsrJa8Vfmp+JAvm6/0CA9gwPQOhJyu9UwTDKzq/jFwQYRiFKFHoBAsHiKwlGQfnaAbIGhiri9gO8/X3/Rje4qwPZB3C8Dd9HMAyzYRp/ByC6wa/rR/YZ8E6AQFB+mQruNODdAKcyCb/LgNPzNP4ewK9Twd0KuBcgFosOBfwc4JepYBTuVcDdAEkFv8UNhgEo4O13AX6VCsIgeHcO+g2Au4fEAuX/twsZaVqHzqAuAQ7juJVgheHIf8qGExTx5yw4O9/GTXoTTSzSGdQFwPu0kA9yCmmGkv4vK2C+oYAj0JvOZSFlxgKaagECwmwphbVpytu8VsEkyB9td3nIIP6l+xFBWlQgWfCHdDCKNiwY8J0L6apGNs0ArkXOakqDfQDrS/O7ALtH3z9yqPsPiTcIHMf7OU+D2dzotJxmAKOluAD39cP/CMD6Utd99YcAogv0JZanqUgRUTjvbZ5pYBTMARb/MYBdWz/+FMBoYXea3yBX83cx3tkPcHxu7f9HAD0ukB+uhWtlHd4AeDs/AyhYTmIBUMQJSyxsMc+Zi9KqOO4RCiDU7Z4rTEHhVJVYid39tmIIiIRbbvVDh+tweJw2csoQuOwGCDacb9kwNM92PC5A4TbP3pHYqibwFT8pDfQepI2NGzA/wlOVi5enewBu+H/U1ncAbjlBYcI/kLy3AAVNy2bBxRRJwGU8geNpXprCBawXjyHAvsqcc+FIlnPBHGJOHWWneicfMOjgNGkPUCvNlpwDhoHwCuDmnSMhF2A4lyjcp4FxkOZV1V2sKIAx3GXdP1i6S5UGono0l0snra4laPNXPOGE1ejSj76CmAGUo+obt2LojGPUVFl1qmjfVbn2v8XDnA8HGrwgtiLv20tnD3SX68WW6+YRpqcPGafzPATGQEYRyp5p4F8rDfROGBRBVmGrVgDhQP3omprlcnnAnWb1FY5WgWPNVd+2XZXGWA2ompK2e8CdJV6AMZJqVcVNCwiJFAKsrTRwwRQcJO2+tPYAVWS22h4amzwDuFDAGYT05gJM0rnM4kD8Ibz84qzqoR26UY0GKERW97C/aanF7QW2MgTSdnWqPX8sJKhHjWEyVqNLt82FrBYB1i3Da0EwHIzjv4BIc2kaVbKpOcpmUho1nIWOM1aBgZJW18YbWEUNOmg7ojXAhQJGeqESy3wsvJTzInMTeQ2Ym90qs+hbBRDMDw+AgqD0HRKsRA4aVdthBd1de+0ywdU0XLrr6f6LAOq4snLT7isgOQUStbLpqWgPJYErOgUEyMXU9aBMFsQaIO9/XFtb3YPUu3ZHOWuAcwXECb+Ds8hrdzJhSwPBTtsW8XVdRU65gpazS5N4D1fl/XPoCQCmPMFxUEH1m6OWYg9RBAKNG02UBuqyonNBY1Un0nZ6AB8kSYX9FDhJU5JVLQicYTxdrwE0GuBVVUz7uVGyqHr86eF3DZ4BlNZq4fBwv9lFXsPTdNY8oeUHqH/fR64yMDqM4Yiw7ZWHD7h3zkktax3mxFQcNgVVQzrHUpGmSroEAcxmgTXctN5Bv4hrhSqc6pTL1AAzu99u5fSzVk86EbRgm28Jsmm23GF3QvWJD6zQiLqc83ZpogNpEcOd4R2cYo5j1WYGfSD8e2KAJ/KJ4OyVc8zihONxdI0NaGbCgTQAFHgkFsAD2CJQCqxPijz9InCZk5I0KPpmDhBOFvEJ90PNEqtLEn1Z06utAA730njAMEzLJd4fA8ReFBuakArYoRzdNzQ0OcUkQpUDR4U3kAmOc7RLTCu+Xx37Ct7GoYcCqOJlugIcUfWe4pyBcNzkCBdzNZAaGFMDuTz0YQuf7ANoXaCvh/khQLBBcuiViBdjYf6jz5Y3JMjGwbJjDtHg9H9BF4IdQ93nOkAkjaTiS4ABetHGHZiQamO3H2MkTZ4Y/WP+aHwAgxlAcCEvAdpRSBiWPwLo6YWXyYMVwDxj7y9hiKJuiAI/6kbiGDCh4zupGzERGZs09iKxFyC4QN2ryFoBhEvWvQmvu7UP/AjgOBmA9Lhu/F0NfAEQwoVeC/d+gXZa0OaY9A56FnFa3ogwvUjiA+jW21PvDT4DAsnOhNc27v4xQJNHgBBmSegdgN6RyEuAbaMFIztKi2bNFVUohluryKxP0DN4AeJ9bgC8NLOK8YIQSLbOGKP5CKBnLGyepmH+70cAPWPhlwCvMwFrhQBb9YMY+3VGF98F6NTaXR4YMbYYkF7tWLj9BKAnG+MCXI+T39LADwDWM8k59KbYF4JnLHJtMsoOvGnCrVttW7ECAqa20mkWFTa9DTD8pzTw70m+DRAa6j7l41A7xpDl0vHAmGI9cyOLTqR71om4QidgTNzJV2HMK4DLjPSv+UDqQ8ItgPkmwEVxbjUHX9h4JCPWN6LjQF8YU7NqzbPaJh49caKZIvrPAMoFwF/qhf3PRBLuSPvKA5CdGA8thJO4pwEwDqCYUUoBoVSdtM7SBFuBdJCoOHBZLwPUgWTyqQYun8r9Why4mZZVv3ycqIGBHonw2C0P1EiEhyMqiar8FfbLbLUcOHcV6A9pGSYO2xrDbQYIFQk19KD8DWbE3IptO9ReashnnUiwAOiORPKfANx4Llwp3Vk8ExEnUpxa+jJgqIKcVVJ5GdXrPnJlj7HpQzTAynVubtrB+SEp8v6hD1zOTMBpVaE78/LjsbB/ZkLMzQObUu+RIsulbEyB+ZeuKaT7kimhDPTRcKRbsGUmBB665FzCdiIxZ8ODfAaIJVUdadZeKYXi1CvtD2l2rZIJewGCExw3sjF47DZ8BHBrbgx6L0pCm4GBSqiCFYKjAwp2yGDmZ3A3crmYG+EkVYPpwx4nwlCms+auKYlVYlbVkQX4yzgXhH16gGNKcUM+C2OCZGbD0Iu4+cB8ujvz24bdADddIOeUnZGB5oK6CVt2KNKgT0vUo8SKs8rUhTBB2V+RC4HB8+oHHBRGx80FMpF1Xe0OReoOBziyuzSLAcpnPnBlw/OMtCwnO79tuu/3gRvzAwWEdY8rRrMoPJBq+aESGHGvDvB+09BYPf8x4Q9rJSCsgQf+13Q9PyqCK5xABbl6OAUzq3lHJdWeGgFinhCfSdFO2w4GiK1oDEDcsgBpaw5wEcjgM5HIUdAIH4mctfx8hipYX16rBIh61ljXKj1Hzyl7s7/XgTJEMjTmujqJZNChqjbVdDBqMWEPRN6mFoqts6JRJXnYhuFPcsrr7qGfqah2EEB+2mk1ELesBkJFi144mkcrC+OjP6M00fGmQ/bDOdL0lDvPK5IcJUu1ogX6AO83EwrAYnGHdB/JxlRPUVdVXeTyZB94w7/S1EJpMCpZ1bre/KRibJkX1awdqblUnupnOHwoEKutjcHIuFx17l/49pNZ+rHSlFD4D3gmV/hmXcT6//HikFjWItQTlfkFuYcPPe14c4bbYp2Iz/zM9IN9AF9NDsTJOu58ZnsDsTqwmsgT+2b2CLUrXh6JTS3ClBSmmsQWi4N1O+ZlxGzKtfBNwF6Oh59MC9qngV+2UmmlguNtej279Fgr92SWJXCRr97t+XS5a5l82YLhKCoXBKf8xRtmn2ng9HVL1mny6TgjiG/CCp68LfrZivUvfO3EaqbvONzPRaam4oce2XprB84P/sb34K0X/a/XiQQv57by+ojsGwF63htDK5XKspDZhhzvjZmrYDb9vXwEMoy4Vm46+2U8HOBTN2hWa46TX/wOMP3a18Nvr3sd/eLll4XH++8+luMNjD95A+jBTxG8faqExztUmeDteIvvD6OZj98jfbwOXhF834xx4CePb7NogvQu/eE99Suz43sOdlSHr9PfjXAEfLQ8+yDnKqHciZDwFcf3RJZKGGqEr75ogx8Fyg718yihQjgNGxBH/h4QJQ2Pj6NtIqTvUvFiuXH+Ua/bBApaYr7wwPfEFQaRlGq5pv2wHG0OJa3KP/A9R6i+bChxMbBZ9EofNsyMmh7ygqFilC4/rRke9HYzjNxJHfxx16PffT++Pj4vfMgh/03yb8G9D6aFwpFfAAAAAElFTkSuQmCC" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 1 · <b>00:37–01:00</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 1 (2/2) · étapes 4 et 5</div><h2>Compléter la skill, <span class="em">puis la tester</span></h2></div><div class="tpill timer" data-timer="1380" data-timer-id="ex1" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">23:00</span></div></div>
+<p class="lead" style="margin-bottom:14px">Relisez les modifications proposées par Cursor avant de les accepter. Seul <span class="ic">SKILL.md</span> doit changer.</p>
+<div class="grid" style="grid-template-columns:1.2fr 1fr;gap:18px;align-items:start">
+<div class="codewrap"><div class="codebar">Étape 4 · prompt de construction · extrait<button class="copy" type="button">Copier</button></div><pre>Complète uniquement .cursor/skills/refinement-us/SKILL.md.
+Lis d'abord tous les fichiers de .cursor/skills/refinement-us/references/.
+Ne lance pas le refinement et n'appelle pas Jira.
+
+Détaille chaque étape du squelette :
+<span class="cm">1. Démarrage · 2. Lecture · 3. Contrôle d'entrée · 4. Découpage
+5. Refinement · 6. Rédaction (AC-N, taggage, Estimation IA)
+7. DoR · 8. GO · 9. Délégation · 10. Récapitulatif
+→ texte complet de chaque étape : guide, exercice 1, étape 4</span>
+
+Ajoute une règle : si le PO répond « je ne sais pas », la question reste
+« à clarifier » et la story n'est pas prête. Écris seulement la skill.</pre></div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar">Étape 5 · nouveau chat Agent<button class="copy" type="button">Copier</button></div><pre>/refinement-us
+
+Bonjour, je suis prêt.</pre></div>
+<div class="expected"><strong>Attendu</strong><p>La skill <strong>liste les epics dont vous êtes le rapporteur, vous demande laquelle traiter, puis s’arrête</strong>. <span class="ic">SKILL.md</span> décrit les dix étapes, cite les fichiers de <span class="ic">references/</span>, impose le GO et ne contient aucune consigne d’écriture Jira.</p></div>
+<div class="notebox" style="font-size:13.5px">Elle lit une epic au hasard ou commence à rédiger ? Corrigez <span class="ic">SKILL.md</span> : rien ne doit autoriser une publication, une modification de l’epic, un GO implicite ou une réponse à la place du PO.</div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>Le prompt complet est long : <strong>faire copier depuis le guide</strong>, pas depuis l’écran. L’extrait sert de repère visuel.</li>
+<li><strong>Points de contrôle de fin d’exercice (01:00)</strong>, cases du guide : six fichiers de référence en place ; rule active (français, Gherkin anglais, aucun chiffre inventé) ; <code>SKILL.md</code> décrit contrôle d’entrée, découpage, refinement, Gherkin, DoR et GO ; lancée dans un nouveau chat, la skill liste vos epics (<code>reporter = currentUser()</code>) et demande laquelle traiter.</li>
+<li><code>/refinement-us</code> n’apparaît pas : chemin <code>.cursor/skills/refinement-us/SKILL.md</code>, frontmatter entre deux <code>---</code>, <code>name</code> identique au dossier, nouveau chat.</li>
+<li>Annoncer à 00:58 : « deux minutes, on passe au refinement ».</li>
+</ul></aside>
+</section>
+
+<!-- 5 · Ex2 (1/2) -->
+<section class="slide" data-section="Exercice 2" data-time="01:00">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 2 · <b>01:00–01:22</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 2 (1/2) · 22 minutes · vous êtes le PO</div><h2>Affiner son epic <span class="em">avec la skill</span></h2></div><div class="tpill timer" data-timer="1320" data-timer-id="ex2" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">22:00</span></div></div>
+<p class="lead" style="margin-bottom:14px"><strong>Objectif :</strong> la skill challenge, vous décidez. Visez <strong>au moins une story prête</strong> en séance, idéalement deux.</p>
+<div class="grid" style="grid-template-columns:1fr 1.1fr;gap:18px;align-items:start">
+<div class="steps">
+<div class="stepl"><span class="n">1</span><span><strong>Lancer la skill</strong> sur votre epic</span><span class="t">2 min</span></div>
+<div class="stepl"><span class="n">2</span><span><strong>Passer le contrôle d’entrée</strong><small>critères de réussite et périmètre clairs ; les compléments restent dans le chat</small></span><span class="t">4 min</span></div>
+<div class="stepl"><span class="n">3</span><span><strong>Valider le découpage</strong><small>une ligne sans critère, deux lignes qui se recouvrent, une ligne hors périmètre ?</small></span><span class="t">6 min</span></div>
+<div class="stepl"><span class="n">4</span><span><strong>Affiner une à deux stories</strong><small>grille de challenge, puis rédaction au template</small></span><span class="t">8 min</span></div>
+<div class="stepl"><span class="n">5</span><span><strong>Améliorer la skill</strong>, pas seulement le résultat</span><span class="t">2 min</span></div>
+</div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar">Étape 1 · nouveau chat Agent<button class="copy" type="button">Copier</button></div><pre>/refinement-us
+
+Mon epic est parmi celles dont je suis le rapporteur
+(reporter = currentUser()) : demande-moi laquelle prendre.
+Je joue le product owner. Commence par la lecture de l'epic
+et le contrôle d'entrée. Ne publie rien.</pre></div>
+<div class="expected"><strong>Attendu</strong><p>Un découpage numéroté US-01, US-02… <strong>que vous avez validé</strong>, chaque ligne avec un persona précis et un critère de réussite (ou « à préciser » assumé). Puis une story au template, avec ses AC-N et sa DoR.</p></div>
+<div class="notebox" style="font-size:13.5px"><strong>Point de contrôle humain :</strong> ne tapez pas encore de GO. Il vient à l’exercice 3, après la relecture indépendante.</div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Lancer le minuteur (T)</strong> : 22 min, partagé avec la slide suivante.</li>
+<li><strong>Point de contrôle à 01:06</strong> : tout le monde a-t-il passé le contrôle d’entrée ? Une epic aux critères flous se complète dans le chat, jamais dans Jira.</li>
+<li><strong>Point de contrôle à 01:12</strong> : découpage validé. Inciter à challenger le tableau plutôt qu’à l’accepter tel quel.</li>
+<li>Si la skill rédige tout sans poser de questions : renforcer la consigne « une étape à la fois, une à trois questions » et la rappeler avec <code>/refinement-us</code>.</li>
+<li>Rappel utile : la skill peut perdre le fil ; la rappeler avec <code>/refinement-us</code> ou Alt+Entrée.</li>
+</ul></aside>
+</section>
+
+<!-- 6 · Ex2 (2/2) -->
+<section class="slide" data-section="Exercice 2" data-time="01:12">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 2 · <b>01:00–01:22</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 2 (2/2) · étapes 4 et 5</div><h2>Votre story tient-elle <span class="em">sans le chat ?</span></h2></div><div class="tpill timer" data-timer="1320" data-timer-id="ex2" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">22:00</span></div></div>
+<p class="lead" style="margin-bottom:14px">Comparez-la à l’exemple de bonne US du kit. Répondez seulement à ce que vous savez.</p>
+<div class="grid" style="grid-template-columns:1fr 1.1fr;gap:18px;align-items:start">
+<div class="card"><span class="tag">À vérifier sur la story rédigée</span>
+<ul class="clean" style="font-size:14px">
+<li>Récit En tant que / Je veux / Afin de, persona précis.</li>
+<li>Critères AC-1, AC-2… : texte français, mots-clés anglais, au moins un refus ou une erreur.</li>
+<li>Critère de l’epic visé et <strong>nom de l’indicateur</strong> présents.</li>
+<li>Plan de taggage : événements nommés.</li>
+<li><strong>Estimation IA</strong> validée par vous : dès L, redécoupe-t-on ? En XL, on redécoupe.</li>
+<li>Les 12 points DoR ont un statut justifié.</li>
+</ul></div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar">Étape 5 · corriger la skill<button class="copy" type="button">Copier</button></div><pre>Arrête le refinement un instant.
+Dans ta dernière réponse, repère ce qui ne respecte pas la skill :
+question à ma place, chiffre ou règle sans source, story fourre-tout,
+critère non observable, cas d'erreur ou de droits oublié.
+Explique quelle consigne manque dans .cursor/skills/refinement-us/SKILL.md,
+propose une correction ciblée et applique-la après mon accord.
+Reprends ensuite le refinement là où nous étions.</pre></div>
+<div class="expected"><strong>Attendu en fin d’exercice</strong><p>Au moins une story au template, avec des critères AC-N, un indicateur nommé, un plan de taggage et une DoR sans point « à clarifier ».</p></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Points de contrôle de fin d’exercice (01:22)</strong>, cases du guide : contrôle d’entrée passé (ou manques notés) ; découpage validé en tableau, chaque ligne reliée à un critère de réussite ; au moins une story rédigée au template avec AC-N, indicateur nommé, plan de taggage et DoR sans point « à clarifier ».</li>
+<li>Si la skill invente un chiffre ou une règle : rappeler la DoR et la grille (une inconnue reste « à clarifier »), puis faire utiliser le prompt de correction.</li>
+<li>L’Estimation IA ne bloque pas <code>prete</code>, mais un XL doit être redécoupé avant d’aller plus loin.</li>
+<li>Vigilance : personne ne tape encore de GO.</li>
+</ul></aside>
+</section>
+
+<!-- 7 · Ex3 (1/2) -->
+<section class="slide" data-section="Exercice 3" data-time="01:22">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 3 · <b>01:22–01:45</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 3 (1/2) · 23 minutes · construire</div><h2>Créer le publieur <span class="em">et le relecteur</span></h2></div><div class="tpill timer" data-timer="1380" data-timer-id="ex3" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">23:00</span></div></div>
+<p class="lead" style="margin-bottom:14px"><strong>Objectif :</strong> un subagent qui publie sans dialogue, un subagent critique qui relit à froid. Puis relecture, GO et aperçu, avant toute écriture.</p>
+<div class="grid" style="grid-template-columns:1fr 1.15fr;gap:18px;align-items:start">
+<div class="steps">
+<div class="stepl"><span class="n">1</span><span><strong>Créer le fichier du publieur</strong><small>.cursor/agents/jira-story-publisher.md · lire « Tu ne peux pas dialoguer »</small></span><span class="t">3 min</span></div>
+<div class="stepl"><span class="n">2</span><span><strong>Compléter le publieur avec Cursor</strong><small>dans un chat distinct de celui du refinement · prompt du guide</small></span><span class="t">6 min</span></div>
+<div class="stepl"><span class="n">3</span><span><strong>Créer le relecteur us-reviewer</strong><small>.cursor/agents/us-reviewer.md · readonly: true</small></span><span class="t">4 min</span></div>
+<div class="stepl"><span class="n">4</span><span><strong>Faire relire ses stories à froid</strong></span><span class="t">5 min</span></div>
+<div class="stepl"><span class="n">5</span><span><strong>Donner le GO et demander un aperçu</strong></span><span class="t">5 min</span></div>
+</div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar">Étape 3 · même chat de construction<button class="copy" type="button">Copier</button></div><pre>Complète .cursor/agents/us-reviewer.md à partir de son squelette,
+sans changer readonly: true. Puis ajoute dans
+.cursor/skills/refinement-us/SKILL.md une étape entre la DoR et le GO :
+« Déléguer au subagent us-reviewer le texte complet des stories rédigées,
+sans résumé de notre échange. Afficher son verdict point par point,
+puis traiter chaque écart avec le PO avant de demander le GO. »
+Ne modifie aucun autre fichier.</pre></div>
+<div class="expected"><strong>Attendu</strong><p>Le fichier du publieur décrit : modes aperçu et publication, recherche avant création (parent = l’epic, <span class="ic">reporter = currentUser()</span>), labels <span class="label prete">prete</span> ou <span class="label brouillon">brouillon</span>, jamais de rapporteur forcé, epic jamais modifiée. <span class="ic">us-reviewer.md</span> garde <span class="ic">readonly: true</span>.</p></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Lancer le minuteur (T)</strong> : 23 min, partagé avec la slide suivante.</li>
+<li>Insister : construire les subagents dans un <strong>chat séparé</strong>, pour ne pas perdre le chat du refinement.</li>
+<li><strong>Point de contrôle à 01:35</strong> (fin de l’étape 3) : le publieur a <code>name</code>, <code>description</code>, <code>model: inherit</code>, <code>readonly: false</code>, <code>is_background: false</code> ; le relecteur a <code>readonly: true</code>.</li>
+<li>Le prompt de construction du publieur (10 étapes) est trop long pour l’écran : le faire copier depuis le guide, exercice 3, étape 2.</li>
+</ul></aside>
+</section>
+
+<!-- 8 · Ex3 (2/2) -->
+<section class="slide" data-section="Exercice 3" data-time="01:35">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 3 · <b>01:22–01:45</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 3 (2/2) · étapes 4 et 5 · dans le chat du refinement</div><h2>Relire à froid, <span class="em">GO, aperçu</span></h2></div><div class="tpill timer" data-timer="1380" data-timer-id="ex3" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">23:00</span></div></div>
+<p class="lead" style="margin-bottom:14px">us-reviewer ne connaît pas votre échange : s’il juge un point « à clarifier » alors que vous l’aviez tranché, la décision n’est pas écrite dans la story.</p>
+<div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar"><span class="n">4</span>Relecture indépendante<button class="copy" type="button">Copier</button></div><pre>Délègue au subagent us-reviewer le texte complet des stories
+rédigées jusqu'ici, tel qu'il partira dans Jira.
+Ne lui transmets ni résumé ni contexte de notre échange.
+Affiche son verdict point par point, puis liste les écarts
+avec ta propre DoR et pose-moi les questions nécessaires.</pre></div>
+<div class="expected"><strong>Attendu</strong><p>Un verdict sur les 12 points, avec une preuve citée ou un manque précis. Chaque écart est tranché par vous, corrigé dans la story, ou reste « à clarifier » : la story partira en <span class="label brouillon">brouillon</span>.</p></div>
+</div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar"><span class="n">5</span>GO du PO · à adapter<button class="copy" type="button">Copier</button></div><pre>GO publication US-01, US-02
+Validé par : &lt;mon prénom et nom&gt;, PO.
+
+Délègue maintenant au subagent jira-story-publisher en mode aperçu.
+Transmets-lui l'epic, ce message de GO mot pour mot
+et le texte complet des stories validées. Aucune écriture Jira.</pre></div>
+<div class="expected"><strong>Attendu</strong><p>Une ligne par story du GO : action « créer » ou « mettre à jour », label prévu, points DoR à clarifier. <strong>Aucune clé inventée, aucune écriture Jira.</strong></p></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Points de contrôle de fin d’exercice (01:45)</strong>, cases du guide : publieur complet dans <code>.cursor/agents/</code> ; us-reviewer (readonly) a jugé chaque story et ses écarts sont traités avant le GO ; GO explicite tapé, délégation seulement après ; l’aperçu ne liste que les stories du GO, avec leur label prévu, sans écriture Jira.</li>
+<li>« us-reviewer et la skill ne sont pas d’accord » : c’est son rôle. Le PO tranche et fait écrire la décision dans la story.</li>
+<li>Story annoncée <code>prete</code> malgré un point à clarifier, ou story absente du GO dans l’aperçu : corriger le fichier du publieur et relancer l’aperçu.</li>
+<li>Le subagent n’est pas appelé : demander explicitement « Délègue au subagent jira-story-publisher ». S’il s’arrête avec une liste de manques, c’est voulu : compléter et relancer.</li>
+</ul></aside>
+</section>
+
+<!-- 9 · Ex4 (1/2) -->
+<section class="slide" data-section="Exercice 4" data-time="01:45">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 4 · <b>01:45–02:05</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 4 (1/2) · 20 minutes</div><h2>Publier en parallèle <span class="em">avec /publier</span></h2></div><div class="tpill timer" data-timer="1200" data-timer-id="ex4" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">20:00</span></div></div>
+<p class="lead" style="margin-bottom:14px"><strong>Objectif :</strong> un raccourci de publication, un publieur par story en parallèle, une vérification dans Jira, puis la preuve qu’une relance ne crée rien de plus.</p>
+<div class="grid" style="grid-template-columns:1fr 1.15fr;gap:18px;align-items:start">
+<div class="steps">
+<div class="stepl"><span class="n">1</span><span><strong>Créer la commande /publier</strong><small>.cursor/commands/publier.md · un prompt enregistré</small></span><span class="t">4 min</span></div>
+<div class="stepl"><span class="n">2</span><span><strong>Publier en parallèle</strong><small>après l’aperçu accepté</small></span><span class="t">6 min</span></div>
+<div class="stepl"><span class="n">3</span><span><strong>Contrôler dans Jira</strong><small>type, parent, rapporteur, label, description</small></span><span class="t">4 min</span></div>
+<div class="stepl"><span class="n">4</span><span><strong>Relancer sans doublon</strong></span><span class="t">4 min</span></div>
+<div class="stepl"><span class="n">5</span><span><strong>Retrouver ses stories</strong> en JQL · facultatif</span><span class="t">2 min</span></div>
+</div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar">Étape 2 · dans le chat du refinement<button class="copy" type="button">Copier</button></div><pre>/publier</pre></div>
+<div class="expected"><strong>Attendu</strong><p>Plusieurs blocs jira-story-publisher démarrent en même temps, un par story du GO. Puis <strong>un seul tableau</strong> : vraie clé <span class="ic">AS2-n</span> et lien par story, action, label, points DoR à clarifier, contrôles. Une création ratée est notée « échec », jamais remplacée par une clé imaginaire.</p></div>
+<div class="card soft" style="padding:12px 16px"><p style="font-size:13.5px"><strong>Dans Jira :</strong> type Story, <strong>votre epic en parent</strong>, vous comme rapporteur, un seul des labels <span class="label prete">prete</span> ou <span class="label brouillon">brouillon</span>. Votre epic est inchangée.</p></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Lancer le minuteur (T)</strong> : 20 min, partagé avec la slide suivante.</li>
+<li><strong>Point de contrôle à 01:49</strong> : en tapant <code>/</code> dans le chat du refinement, <code>publier</code> apparaît. Sinon : chemin <code>.cursor/commands/publier.md</code>, extension <code>.md</code>, nouveau chat ou rechargement.</li>
+<li>Les publieurs tournent l’un après l’autre : le résultat reste valable. Pour du parallèle, demander explicitement « lance en parallèle un subagent jira-story-publisher par story ».</li>
+<li>Confirmations MCP répétées pour l’écriture : c’est normal, accepter au cas par cas, sans désactiver les protections.</li>
+<li>Story en sous-tâche, sans parent, doublon ou epic modifiée : arrêter, noter les clés, ne rien supprimer à la main.</li>
+</ul></aside>
+</section>
+
+<!-- 10 · Ex4 (2/2) -->
+<section class="slide" data-section="Exercice 4" data-time="01:57">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Exercice 4 · <b>01:45–02:05</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Exercice 4 (2/2) · étapes 4 et 5</div><h2>Relancer : <span class="em">mêmes clés, zéro création</span></h2></div><div class="tpill timer" data-timer="1200" data-timer-id="ex4" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Minuteur<br>touche T</span><span class="tv">20:00</span></div></div>
+<p class="lead" style="margin-bottom:14px">Le publieur cherche l’existant avant de créer. Une story <span class="label brouillon">brouillon</span> affinée puis republiée passe en <span class="label prete">prete</span>, sur la même clé.</p>
+<div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar"><span class="n">4</span>Test de relance<button class="copy" type="button">Copier</button></div><pre>/publier
+
+Relance avec exactement le même GO et le même texte de stories.
+Je veux vérifier qu'aucun doublon n'est créé : donne le nombre de stories
+créées, mises à jour et inchangées, avec leurs clés Jira.</pre></div>
+<div class="expected"><strong>Attendu</strong><p>Les mêmes clés Jira, <strong>zéro création</strong>. Ne lancez jamais deux publieurs sur la même story.</p></div>
+</div>
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar"><span class="n">5</span>Jira · recherche avancée · facultatif<button class="copy" type="button">Copier</button></div><pre>project = AS2
+AND reporter = currentUser()
+AND labels = brouillon
+ORDER BY created ASC</pre></div>
+<div class="card soft" style="padding:12px 16px"><p style="font-size:13.5px"><span class="ic">currentUser()</span> retrouve vos issues, puisque le MCP utilise votre connexion. Remplacez <span class="ic">brouillon</span> par <span class="ic">prete</span> pour les stories prêtes. C’est une séparation d’organisation, pas une restriction de droits.</p></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Points de contrôle de fin d’exercice (02:05)</strong>, cases du guide : <code>/publier</code> apparaît et lance la publication ; un publieur par story en parallèle, résultats fusionnés ; stories sous l’epic, type Story, rapporteur = participant, <code>prete</code> ou <code>brouillon</code>, epic intacte ; relance sans doublon ; tableau avec vraies clés, points DoR à clarifier et compléments « À valider ».</li>
+<li><code>reporter = currentUser()</code> ne retrouve rien : la connexion MCP utilise peut-être un autre compte. Reconnecter avec le compte de formation ; le publieur ne doit jamais forcer un rapporteur.</li>
+<li>Jira indisponible : continuer le refinement, la relecture et l’aperçu ; la publication se fera dès la reprise.</li>
+<li>À 02:03, annoncer le bilan et demander à chacun de préparer le lien d’une story <code>prete</code>.</li>
+</ul></aside>
+</section>
+
+<!-- 11 · Bilan : construit -->
+<section class="slide" data-section="Bilan" data-time="02:05">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Bilan · <b>02:05–02:15</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Bilan · ce que vous avez construit</div><h2>Cinq briques réutilisables, <span class="em">des stories dans Jira</span></h2></div><div class="tpill timer" data-timer="600" data-timer-id="bilan" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Bilan<br>touche T</span><span class="tv">10:00</span></div></div>
+<p class="lead" style="margin-bottom:16px">Une pratique de refinement encodée dans une skill, une relecture et une publication confiées à des subagents qui rendent des preuves vérifiables.</p>
+<div class="grid g5" style="gap:12px">
+<div class="card brick"><span class="tag">Rule</span><h3>us-redaction</h3><span class="file">.cursor/rules/us-redaction.mdc</span><p>Français, Gherkin anglais, rien d’inventé.</p></div>
+<div class="card brick hl"><span class="tag">Skill</span><h3>refinement-us</h3><span class="file">.cursor/skills/refinement-us/</span><p>Challenge, découpe, rédige, DoR, GO.</p></div>
+<div class="card brick"><span class="tag">Subagent critique</span><h3>us-reviewer</h3><span class="file">.cursor/agents/us-reviewer.md</span><p>Relit à froid, en lecture seule.</p></div>
+<div class="card brick"><span class="tag">Subagent publieur</span><h3>jira-story-publisher</h3><span class="file">.cursor/agents/jira-story-publisher.md</span><p>Aperçu, publication, relecture.</p></div>
+<div class="card brick"><span class="tag">Commande</span><h3>/publier</h3><span class="file">.cursor/commands/publier.md</span><p>Un publieur par story, en parallèle.</p></div>
+</div>
+<div class="grid g2" style="margin-top:16px;align-items:stretch">
+<div class="notebox"><strong>Dans Jira :</strong> vos stories sous votre epic, rapporteur = vous, label <span class="label prete">prete</span> ou <span class="label brouillon">brouillon</span>, description au format pivot avec AC-N, plan de taggage et Estimation IA.</div>
+<div class="expected"><strong>Partage des briques</strong><p>Partagez les cinq fichiers ou dossiers ci-dessus sur le canal indiqué par l’animateur. Dépôt commun des supports : lien communiqué par l’animateur.</p></div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li><strong>Lancer le minuteur du bilan (T)</strong> : 10 min, partagé avec les slides 12 à 16.</li>
+<li>1 min. Saluer le travail : même une seule story <code>prete</code> est une réussite, une story <code>brouillon</code> bien documentée aussi.</li>
+<li>Indiquer le canal de partage des briques (à préparer avant la séance). Le lien du dépôt commun n’est pas encore publié : le communiquer quand il existe.</li>
+</ul></aside>
+</section>
+
+<!-- 12 · Tour de table -->
+<section class="slide" data-section="Bilan" data-time="02:06">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Bilan · <b>02:05–02:15</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Tour de table · 4 minutes</div><h2>Qu’est-ce que le challenge de l’IA <span class="em">a changé ?</span></h2></div><div class="tpill timer" data-timer="600" data-timer-id="bilan" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Bilan<br>touche T</span><span class="tv">10:00</span></div></div>
+<p class="lead" style="margin-bottom:18px">Tout le monde répond dans le chat de la visio ; trois ou quatre volontaires développent à l’oral.</p>
+<div class="grid g3" style="gap:16px">
+<div class="card hl"><div class="who"><div class="avatar">1</div><div><small>Dans le chat</small><strong>Une story prête</strong></div></div><p style="font-size:14.5px">Collez le <strong>lien Jira d’une story</strong> <span class="label prete">prete</span>.</p></div>
+<div class="card"><div class="who"><div class="avatar">2</div><div><small>Dans le chat ou à l’oral</small><strong>Une question de challenge</strong></div></div><p style="font-size:14.5px">La question de la skill qui a <strong>changé votre story</strong> : persona, découpage, mesure, cas oublié, taille ?</p></div>
+<div class="card"><div class="who"><div class="avatar">3</div><div><small>Dans le chat ou à l’oral</small><strong>Un écart du relecteur</strong></div></div><p style="font-size:14.5px">Ce qu’<strong>us-reviewer</strong> a relevé et que vous pensiez avoir tranché.</p></div>
+</div>
+<div class="notebox" style="margin-top:18px">Ce qui ressort souvent : une décision prise dans le chat mais jamais écrite dans la story. C’est exactement ce que le jour 3 n’aurait pas vu.</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>4 min. Laisser 60 s pour que le chat se remplisse, puis donner la parole à 3 ou 4 volontaires (45 s chacun).</li>
+<li>Relancer avec : « Qu’auriez-vous écrit sans la skill ? » et « Quelle question vous a mis mal à l’aise comme PO ? ».</li>
+<li>Repérer un exemple de « je ne sais pas » assumé (story en <code>brouillon</code>) pour le valoriser.</li>
+</ul></aside>
+</section>
+
+<!-- 13 · Passation J3 -->
+<section class="slide" data-section="Bilan" data-time="02:10">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Bilan · <b>02:05–02:15</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Passation · jour 3 avec Yassine</div><h2>Demain, vos stories <span class="label prete" style="font-size:26px;vertical-align:middle">prete</span> deviennent un prototype</h2></div><div class="tpill timer" data-timer="600" data-timer-id="bilan" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Bilan<br>touche T</span><span class="tv">10:00</span></div></div>
+<p class="lead" style="margin-bottom:16px">Pas d’export de fichier : le prototypage lit les stories directement dans Jira, sous leur epic parente.</p>
+<div class="grid" style="grid-template-columns:1.1fr 1fr;gap:18px;align-items:start">
+<div class="grid" style="gap:12px">
+<div class="codewrap"><div class="codebar">Retrouver ses stories prêtes · Jira ou MCP<button class="copy" type="button">Copier</button></div><pre>project = AS2
+AND reporter = currentUser()
+AND labels = prete</pre></div>
+<div class="card soft" style="padding:12px 16px"><p style="font-size:14px">Vous êtes le rapporteur de vos stories : avec la même connexion MCP, <span class="ic">reporter = currentUser()</span> les retrouve au jour 3, sans liste à transmettre.</p></div>
+</div>
+<div class="steps">
+<div class="stepl"><span class="n">✓</span><span><strong><span class="label prete">prete</span> part au prototype</strong><small>récit, AC-N, écrans, données et états : le Flow Mapper du jour 3 lit ces sections telles quelles</small></span><span></span></div>
+<div class="stepl"><span class="n" style="background:#9f2a3b">!</span><span><strong><span class="label brouillon">brouillon</span> reste à affiner</strong><small>reprendre la skill, puis /publier : même clé, label remplacé</small></span><span></span></div>
+<div class="stepl"><span class="n" style="background:var(--dark)">Q</span><span><strong>Quality avec Ismael</strong><small>s’appuie sur les mêmes critères AC-N et sur l’epic parente</small></span><span></span></div>
+</div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>1 min 30. Message clé : <strong>ce que vous avez publié aujourd’hui est l’entrée de demain</strong>. Une story sans parent ou sans le label <code>prete</code> ne sera pas prototypée.</li>
+<li>Ne pas modifier les titres de section ni les libellés de la description (récit, « Indicateur de succès de la story », « Scenario: AC-N · … », « Taille : · Tokens estimés : ») : le jour 3 les analyse.</li>
+<li>Encourager à passer ce soir les stories <code>brouillon</code> en <code>prete</code> si les décisions manquantes sont connues.</li>
+</ul></aside>
+</section>
+
+<!-- 14 · Estimation IA J5 -->
+<section class="slide" data-section="Bilan" data-time="02:11">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Bilan · <b>02:05–02:15</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Et au jour 5 · Code</div><h2>L’Estimation IA <span class="em">sera calibrée</span></h2></div><div class="tpill timer" data-timer="600" data-timer-id="bilan" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Bilan<br>touche T</span><span class="tv">10:00</span></div></div>
+<p class="lead" style="margin-bottom:16px">À la place des story points, chaque story porte une taille et un ordre de grandeur des tokens que l’agent consommera pour la <strong>réaliser en développement, au jour 5</strong>, et non pour le prototype du jour 3.</p>
+<div class="scale">
+<div><b>XS</b><span>&lt; 50 k</span></div><div><b>S</b><span>50 k–200 k</span></div><div class="mid"><b>M</b><span>200 k–1 M</span></div><div class="warn"><b>L</b><span>1 M–3 M</span><small>redécouper ?</small></div><div class="stop"><b>XL</b><span>&gt; 3 M</span><small>à redécouper</small></div>
+</div>
+<div class="grid g3" style="margin-top:18px">
+<div class="card soft"><h3>Aujourd’hui</h3><p style="font-size:14px">La skill propose la taille d’après les AC, les écrans, les données et les intégrations ; vous l’avez validée.</p></div>
+<div class="card soft"><h3>Au jour 5</h3><p style="font-size:14px">On compare les tokens réellement consommés aux estimations et on <strong>calibre le barème</strong>, aujourd’hui indicatif.</p></div>
+<div class="card soft"><h3>Ce qui ne change pas</h3><p style="font-size:14px">Hors DoR : l’estimation <strong>ne bloque pas</strong> <span class="label prete">prete</span>. Gardez la ligne « Taille : · Tokens estimés : » intacte.</p></div>
+</div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>1 min. Le barème est indicatif : il sera calibré au jour 5 à partir de la consommation réelle.</li>
+<li>Exemple du fil rouge : US-04 « Assigner un commentaire » est estimée M (200 k à 1 M tokens).</li>
+<li>Question probable : « et si l’estimation est fausse ? » Réponse : c’est l’objet du calibrage ; ce qui compte aujourd’hui, c’est qu’un XL soit redécoupé.</li>
+</ul></aside>
+</section>
+
+<!-- 15 · Bonus -->
+<section class="slide" data-section="Bilan" data-time="02:12">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Bilan · <b>02:05–02:15</b></span></header>
+<div class="s-body">
+<div class="ex-head"><div><div class="eyebrow">Pour aller plus loin · bonus du guide</div><h2>Quatre usages de Cursor <span class="em">pour un refinement plus sûr</span></h2></div><div class="tpill timer" data-timer="600" data-timer-id="bilan" role="timer" title="Cliquer ou appuyer sur T"><span class="tl">Bilan<br>touche T</span><span class="tv">10:00</span></div></div>
+<p class="lead" style="margin-bottom:16px">À refaire après l’atelier, sur une autre de vos epics. Les prompts sont dans le guide, section Bonus.</p>
+<div class="grid g4" style="gap:14px">
+<div class="card brick"><span class="tag">1 · Checkpoints</span><h3>Revenir en arrière</h3><p>« Restore Checkpoint » restaure les fichiers modifiés par l’agent, pas la conversation. Local, ne remplace pas Git.</p></div>
+<div class="card brick"><span class="tag">2 · Mode Plan</span><h3>Explorer l’epic avant de découper</h3><p>Maj+Tab jusqu’au mode Plan : l’agent liste les questions à trancher comme PO, sans rien créer.</p></div>
+<div class="card brick"><span class="tag">3 · Image</span><h3>Décrire les écrans</h3><p>Une capture collée alimente la section « Écrans, données et états ». Aucune règle métier tirée de l’image ; ajouts « à valider ».</p></div>
+<div class="card brick"><span class="tag">4 · Code</span><h3>Challenger la faisabilité</h3><p>Référencer le dépôt public avec <span class="ic">@</span> : existant, manques, risques. Lien du dépôt à venir.</p></div>
+</div>
+<div class="notebox" style="margin-top:18px">En mission : adaptez la DoR, la grille et le template à votre client, en gardant le principe. <strong>L’IA propose, le PO décide.</strong></div>
+</div>
+<footer class="s-foot"><span>Vivien COLAS · 8 décembre 2026</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>45 s. Ne pas faire de démo : renvoyer au guide.</li>
+<li>Le dépôt GitHub public du produit (bonus 4) n’a pas encore de lien : le préciser si quelqu’un demande.</li>
+</ul></aside>
+</section>
+
+<!-- 16 · Clôture -->
+<section class="slide dark" data-section="Clôture" data-time="02:14">
+<header class="s-top"><img class="brand-logo" src="data:image/png;base64,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" alt="Devoteam"><span class="brand-divider" aria-hidden="true"></span><span class="brand-program">Agentic SDLC <small>/ Atelier 02 · Specify</small></span><span class="s-section">Clôture · <b>02:15</b></span></header>
+<div class="s-body"><div class="hero">
+<div>
+<div class="eyebrow">Merci · fin de l’atelier Specify</div>
+<h1>Vos stories sont dans Jira.<br><span class="hero-emphasis">Rendez-vous au jour 3.</span></h1>
+<p>Demain, avec Yassine, les stories <strong>prete</strong> deviennent un prototype. Ce soir : partagez vos cinq briques et passez en prete ce qui peut l’être.</p>
+<div class="chips" style="margin-top:26px"><span class="chip">Guide participant</span><span class="chip">Tableau Jira AS2</span><span class="chip">Canal de partage des briques</span></div>
+</div>
+<div class="hero-aside">
+<div class="hero-metric"><span class="metric-label">Animateur</span><strong>Vivien COLAS</strong><span class="metric-caption">Questions : canal de l’atelier</span></div>
+<div class="hero-meta"><div class="hero-mini"><strong>J3</strong><span>Prototype · Yassine</span></div><div class="hero-mini"><strong>J5</strong><span>Calibrage de l’Estimation IA</span></div></div>
+</div>
+</div></div>
+<footer class="s-foot"><span>Agentic SDLC · AI Shift J2 · Specify</span><span class="s-num"></span></footer>
+<aside class="notes"><ul>
+<li>30 s. Remercier, rappeler le jour 3 et le canal de partage.</li>
+<li>Recoller dans le chat le lien du guide et celui du tableau Jira AS2.</li>
+<li>Après la séance : relever les clés signalées (doublons, stories sans parent) et ne rien supprimer sans vérification.</li>
+</ul></aside>
+</section>
+
+</div></div></div>
+
+<div id="progress" aria-hidden="true"></div>
+<aside id="notes-panel" aria-label="Notes de l’animateur" aria-live="polite"></aside>
+<nav id="bar" aria-label="Navigation de la présentation">
+<button id="prev" type="button" aria-label="Slide précédente">←</button><span class="count" id="count">1 / 16</span><button id="next" type="button" aria-label="Slide suivante">→</button>
+<button id="btn-notes" type="button" aria-pressed="false">Notes (N)</button><button id="btn-fs" type="button">Plein écran (F)</button><button id="btn-help" type="button">Aide (?)</button>
+<span class="hint"><kbd>←</kbd><kbd>→</kbd> naviguer · <kbd>N</kbd> notes · <kbd>F</kbd> plein écran · <kbd>T</kbd> minuteur</span>
+</nav>
+<div id="help" role="dialog" aria-modal="true" aria-labelledby="help-title"><div class="box"><h3 id="help-title">Raccourcis clavier</h3><table><tbody>
+<tr><td>→ ↓ Espace Page suiv.</td><td>Slide suivante</td></tr>
+<tr><td>← ↑ Page préc.</td><td>Slide précédente</td></tr>
+<tr><td>Début / Fin</td><td>Première / dernière slide</td></tr>
+<tr><td>N</td><td>Afficher ou masquer les notes de l’animateur</td></tr>
+<tr><td>F</td><td>Plein écran</td></tr>
+<tr><td>T</td><td>Démarrer ou mettre en pause le minuteur de la slide</td></tr>
+<tr><td>Chiffres + Entrée</td><td>Aller à la slide n</td></tr>
+<tr><td>? ou Échap</td><td>Afficher ou fermer cette aide</td></tr>
+</tbody></table></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+const slides=[...document.querySelectorAll('.slide')];
+const total=slides.length;
+const deck=document.getElementById('deck');
+const scaler=document.getElementById('scaler');
+const viewport=document.getElementById('viewport');
+const notesPanel=document.getElementById('notes-panel');
+const pad=n=>String(n).padStart(2,'0');
+let cur=0,typed='';
+const params=new URLSearchParams(location.search);
+if(params.has('notes'))document.body.classList.add('notes-open');
+
+slides.forEach((s,k)=>{const n=s.querySelector('.s-num');if(n)n.innerHTML=`<span>${pad(k+1)}</span> / ${pad(total)}`;s.setAttribute('aria-label',`Slide ${k+1} sur ${total}`);});
+
+function fit(){
+  const r=viewport.getBoundingClientRect();
+  const m=params.has('bare')?0:16;
+  const sc=Math.min((r.width-2*m)/1280,(r.height-2*m)/720);
+  deck.style.transform=`scale(${sc})`;
+  scaler.style.width=`${1280*sc}px`;scaler.style.height=`${720*sc}px`;
+}
+function renderNotes(){
+  const s=slides[cur];const n=s.querySelector('.notes');
+  notesPanel.innerHTML=`<div class="nh">Notes de l’animateur · slide ${cur+1} / ${total} <span>${s.dataset.section||''} · repère ${s.dataset.time||''}</span></div>`+(n?n.innerHTML:'<p>Pas de note.</p>');
+}
+function go(n){
+  cur=Math.max(0,Math.min(total-1,n));
+  slides.forEach((s,k)=>{const on=k===cur;s.classList.toggle('active',on);s.setAttribute('aria-hidden',String(!on));});
+  document.getElementById('count').textContent=`${cur+1} / ${total}`;
+  document.getElementById('progress').style.width=`${100*(cur+1)/total}%`;
+  renderNotes();
+  if(location.hash!==`#${cur+1}`)history.replaceState(null,'',`${location.pathname}${location.search}#${cur+1}`);
+}
+function toggleNotes(){const on=document.body.classList.toggle('notes-open');document.getElementById('btn-notes').classList.toggle('on',on);document.getElementById('btn-notes').setAttribute('aria-pressed',String(on));fit();}
+function toggleFs(){
+  if(!document.fullscreenElement){(document.documentElement.requestFullscreen?.()||Promise.reject()).catch(()=>toast('Plein écran indisponible dans ce navigateur.'));}
+  else document.exitFullscreen();
+}
+document.addEventListener('fullscreenchange',()=>{document.body.classList.toggle('fs',!!document.fullscreenElement);fit();});
+const help=document.getElementById('help');
+function toggleHelp(force){help.classList.toggle('show',force??!help.classList.contains('show'));}
+
+let toastTimer;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);}
+
+/* Minuteurs : partagés par data-timer-id entre les slides d'un même exercice */
+const timers=new Map();
+const tkey=el=>el.dataset.timerId||el;
+function drawTimer(k){const t=timers.get(k);const v=Math.max(0,t.left);t.els.forEach(el=>{el.querySelector('.tv').textContent=`${pad(Math.floor(v/60))}:${pad(v%60)}`;el.classList.toggle('done',v===0);el.classList.toggle('running',!!t.id);});}
+document.querySelectorAll('[data-timer]').forEach(el=>{const k=tkey(el);if(!timers.has(k))timers.set(k,{left:+el.dataset.timer,total:+el.dataset.timer,id:null,els:[]});timers.get(k).els.push(el);el.addEventListener('click',()=>toggleTimer(el));});
+function toggleTimer(el){
+  const k=tkey(el),t=timers.get(k);
+  if(t.id){clearInterval(t.id);t.id=null;drawTimer(k);toast('Minuteur en pause.');return;}
+  if(t.left<=0)t.left=t.total;
+  t.id=setInterval(()=>{t.left--;if(t.left<=0){clearInterval(t.id);t.id=null;toast('Temps écoulé.');}drawTimer(k);},1000);
+  drawTimer(k);
+}
+
+document.querySelectorAll('.codebar .copy').forEach(btn=>btn.addEventListener('click',async e=>{
+  e.stopPropagation();
+  const text=btn.closest('.codewrap').querySelector('pre').textContent;
+  try{await navigator.clipboard.writeText(text);btn.textContent='Copié ✓';toast('Prompt copié.');setTimeout(()=>btn.textContent='Copier',1600);}
+  catch{const r=document.createRange();r.selectNodeContents(btn.closest('.codewrap').querySelector('pre'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Copie indisponible : texte sélectionné.');}
+}));
+
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  const k=e.key;
+  if(help.classList.contains('show')&&(k==='Escape'||k==='?')){toggleHelp(false);e.preventDefault();return;}
+  if(/^[0-9]$/.test(k)){typed+=k;return;}
+  if(k==='Enter'&&typed){go(+typed-1);typed='';e.preventDefault();return;}
+  typed='';
+  if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(k)){go(cur+1);e.preventDefault();}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){go(cur-1);e.preventDefault();}
+  else if(k==='Home'){go(0);e.preventDefault();}
+  else if(k==='End'){go(total-1);e.preventDefault();}
+  else if(k==='n'||k==='N')toggleNotes();
+  else if(k==='f'||k==='F')toggleFs();
+  else if(k==='t'||k==='T'){const el=slides[cur].querySelector('[data-timer]');if(el)toggleTimer(el);else toast('Pas de minuteur sur cette slide.');}
+  else if(k==='?')toggleHelp(true);
+});
+document.getElementById('prev').addEventListener('click',()=>go(cur-1));
+document.getElementById('next').addEventListener('click',()=>go(cur+1));
+document.getElementById('btn-notes').addEventListener('click',toggleNotes);
+document.getElementById('btn-fs').addEventListener('click',toggleFs);
+document.getElementById('btn-help').addEventListener('click',()=>toggleHelp());
+help.addEventListener('click',e=>{if(e.target===help)toggleHelp(false);});
+let tx=null;
+deck.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+deck.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(cur+(dx<0?1:-1));tx=null;});
+window.addEventListener('resize',fit);
+window.addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n&&n-1!==cur)go(n-1);});
+
+if(params.has('bare'))document.body.classList.add('bare');
+document.getElementById('btn-notes').classList.toggle('on',document.body.classList.contains('notes-open'));
+go((parseInt(location.hash.slice(1),10)||1)-1);
+fit();
+
+/* Contrôle de mise en page : ?check liste les slides dont le contenu déborde */
+if(params.has('check')){
+  (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{
+    const keep=cur,bad=[];
+    slides.forEach((s,k)=>{go(k);const b=s.querySelector('.s-body');if(b.scrollHeight>b.clientHeight+1||b.scrollWidth>b.clientWidth+1)bad.push(`${k+1}:${b.scrollHeight}/${b.clientHeight}`);});
+    go(keep);
+    const out=document.createElement('pre');out.id='check-result';out.textContent=`CHECK slides=${total} overflow=[${bad.join(' ')}] font=${document.fonts?document.fonts.check('16px Montserrat'):'?'}`;document.body.appendChild(out);
+  });
+}
+</script>
+<style>body.bare #bar,body.bare #progress{display:none}body.bare #viewport{bottom:0}body.bare .slide{border-radius:0;box-shadow:none}body.bare{background:white}</style>
+</body></html>

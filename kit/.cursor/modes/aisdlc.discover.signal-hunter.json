@@ -1,0 +1,39 @@
+{
+  "name": "aisdlc.discover.signal-hunter",
+  "description": "Discover · Signal Hunter — agrège et dédoublonne les feedbacks bruts (Chat + Jira Support + Confluence).",
+  "model": "claude-sonnet-5-5-medium",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.discover.signal-hunter"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": false,
+    "run_terminal_cmd": false,
+    "web_search": false
+  },
+  "mcp": {
+    "allowed_servers": ["atlassian", "google-chat"],
+    "allowed_tools": [
+      "atlassian:search_issues",
+      "atlassian:get_issue",
+      "atlassian:get_confluence_page",
+      "google-chat:list_spaces",
+      "google-chat:list_messages"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/discover/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "github_write": false,
+    "figma_write": false,
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

@@ -1,0 +1,37 @@
+---
+description: "Rédaction des user stories du pipeline Specify et paramètres Jira (site, projet)"
+alwaysApply: true
+---
+
+## Paramètres du pipeline Specify
+
+Seul endroit à modifier pour brancher le pipeline sur un autre Jira.
+La skill refinement-us et les subagents us-reviewer et
+jira-story-publisher lisent ces valeurs ici.
+
+| Paramètre    | Valeur                       | Rôle                                                  |
+|--------------|------------------------------|-------------------------------------------------------|
+| SITE_JIRA    | VOTRE-SITE.atlassian.net | Site Atlassian lu et écrit via le MCP Atlassian.      |
+| PROJET_JIRA  | AS2                          | Clé du projet Jira où chacun crée ses epics et stories. |
+
+Epics et stories se retrouvent par leur créateur (reporter = currentUser(),
+le compte de la connexion MCP), jamais par une clé saisie par le participant.
+
+Valeurs par défaut : celles de l'atelier Specify.
+
+## Rédaction
+
+- Rédige les user stories et tout le texte métier en français,
+  y compris les titres des scénarios.
+- Récit au format : En tant que … / Je veux … / Afin de …
+- Critères d'acceptation numérotés AC-1, AC-2…, autant que nécessaire.
+  Chacun a un seul Given, un seul When et un seul Then. Seuls ces
+  mots-clés Gherkin (et Feature, Scenario) restent en anglais.
+  Une liste très longue signale une story à redécouper.
+- N'invente jamais un chiffre, une cible, une date, une règle métier,
+  un persona ou une source.
+- Les seuls chiffres admis sont ceux écrits dans l'epic ou validés
+  par le PO dans le chat. Une cible inconnue s'écrit « à préciser » ;
+  tout autre manque est noté « à clarifier ».
+- Exception : l'Estimation IA reprend le barème indicatif du template
+  (XS à XL, en tokens), présenté comme à calibrer au jour 5.

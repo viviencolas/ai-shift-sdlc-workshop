@@ -1,0 +1,51 @@
+user_story:
+  key: AISDLC-456
+  parent_opportunity: checkout-mobile-abandon
+  as_a: "acheteur mobile dont l'autocomplete d'adresse échoue"
+  i_want: "pouvoir basculer vers une saisie manuelle de mon adresse de livraison en 1 tap"
+  so_that: "je puisse valider ma commande sans quitter l'app ni appeler le support"
+  acceptance_criteria:
+    - id: AC-1
+      given: "Je suis sur l'écran « Adresse de livraison » en mobile et l'autocomplete Google Places répond 200 OK"
+      when: "Je tape au moins 3 caractères dans le champ adresse"
+      then: "Je vois au moins 1 suggestion dans les 400 ms et je peux la sélectionner d'un tap"
+      testable: true
+    - id: AC-2
+      given: "Je suis sur l'écran « Adresse de livraison » en mobile et Google Places répond en erreur (5xx, timeout > 2 s, ou 0 résultat après 3 caractères)"
+      when: "L'erreur est détectée"
+      then: "Un lien « Saisir mon adresse manuellement » apparaît sous le champ, et un tap ouvre un formulaire 5 champs (rue, complément, code postal, ville, pays)"
+      testable: true
+    - id: AC-3
+      given: "Je remplis le formulaire manuel avec rue=10 rue des Lilas, cp=43000, ville=Le Puy-en-Velay, pays=FR"
+      when: "Je tape sur « Valider mon adresse »"
+      then: "L'adresse est acceptée, affichée sur le récap, et je peux passer à l'étape paiement"
+      testable: true
+    - id: AC-4
+      given: "Je remplis le formulaire manuel avec un code postal invalide (`00000`)"
+      when: "Je tape sur « Valider mon adresse »"
+      then: "Le champ « code postal » est marqué en erreur avec le message « Code postal non reconnu », aucun passage à l'étape suivante"
+      testable: true
+  code_hints:
+    - repo: aisdlc-sandbox
+      path: "apps/web/src/checkout/AddressStep.tsx"
+      note: "Composant actuel qui porte l'autocomplete. À étendre, pas réécrire."
+    - repo: aisdlc-sandbox
+      path: "packages/api-client/src/places.ts"
+      note: "Wrapper Google Places. Ajouter détection timeout + 0 résultats."
+    - repo: aisdlc-sandbox
+      path: "apps/web/src/checkout/__tests__/AddressStep.test.tsx"
+      note: "Tests existants à compléter avec le scénario fallback."
+  design_hints:
+    - file_key: "fig_AISDLC_DS_main"
+      node_id: "412:88"
+      note: "Composant TextField avec slot error déjà dispo dans AI SDLC DS."
+    - file_key: "fig_AISDLC_Prototypes"
+      node_id: "9:21"
+      note: "Page checkout existante — ajouter le flow fallback à côté."
+  non_functional:
+    - "a11y-AA"
+    - "i18n (FR-fr prioritaire, EN-en en V2)"
+    - "perf (fallback visible en < 500 ms après détection de l'erreur)"
+  effort_estimate_days: 2
+  open_questions: []
+  status: ready_for_proto_and_qa

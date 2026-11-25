@@ -1,0 +1,76 @@
+test_plan:
+  story_key: AISDLC-456
+  strategy:
+    levels: [unit, integration, e2e, manual_exploratory]
+    automation_target: partial
+    environments: [dev, staging]
+    data_requirements:
+      - "Compte test `nora.manual@aisdlc.test`, panier préchargé avec 1 article à 42 €."
+      - "Stub Google Places : mode `ok` (3 suggestions), mode `timeout_2500ms`, mode `zero_results`, mode `5xx`."
+      - "Jeux d'adresses FR valides (Le Puy-en-Velay 43000) et invalides (CP 00000)."
+    risks:
+      - description: "Changement du contrat Google Places sans préavis → casse du fallback. Mitigation : stub + alerte CI."
+        ac_ref: AC-2
+      - description: "A11y sur l'overlay — focus trap et VoiceOver sur iOS."
+        ac_ref: AC-2
+  scenarios:
+    - id: TC-1
+      given: "Autocomplete nominal (mode `ok`), champ vide"
+      when: "L'utilisateur tape « 10 rue des Li »"
+      then: "Au moins 1 suggestion s'affiche dans un délai < 400 ms"
+      type: happy_path
+      covers_acceptance_criteria: [AC-1]
+      automated: true
+    - id: TC-2
+      given: "Google Places répond en 5xx"
+      when: "L'erreur est détectée côté client"
+      then: "Le lien `Saisir mon adresse manuellement` est visible en < 500 ms sous le champ"
+      type: edge_case
+      covers_acceptance_criteria: [AC-2]
+      automated: true
+    - id: TC-3
+      given: "Google Places répond `zero_results` après 3 caractères"
+      when: "Aucun résultat pendant 800 ms"
+      then: "Le lien `Saisir mon adresse manuellement` apparaît"
+      type: edge_case
+      covers_acceptance_criteria: [AC-2]
+      automated: true
+    - id: TC-4
+      given: "L'overlay manuel est ouvert"
+      when: "L'utilisateur saisit rue=10 rue des Lilas, cp=43000, ville=Le Puy-en-Velay, pays=FR puis tape Valider"
+      then: "L'adresse est acceptée et le récap affiche la valeur saisie"
+      type: happy_path
+      covers_acceptance_criteria: [AC-3]
+      automated: true
+    - id: TC-5
+      given: "L'overlay manuel est ouvert avec cp=00000"
+      when: "L'utilisateur tape Valider"
+      then: "Le champ cp est marqué en erreur, message `Code postal non reconnu`, pas de passage à l'étape suivante"
+      type: negative
+      covers_acceptance_criteria: [AC-4]
+      automated: true
+    - id: TC-6
+      given: "L'overlay manuel est ouvert sur iOS avec VoiceOver actif"
+      when: "L'utilisateur parcourt les champs au swipe"
+      then: "Le focus reste piégé dans l'overlay, chaque champ est annoncé avec son label"
+      type: non_functional
+      covers_acceptance_criteria: [AC-2]
+      automated: false
+    - id: TC-7
+      given: "Google Places timeout à 2500 ms"
+      when: "L'utilisateur tape 3 caractères"
+      then: "Le fallback apparaît sans message d'erreur agressif, et le champ reste focusable"
+      type: edge_case
+      covers_acceptance_criteria: [AC-2]
+      automated: true
+  coverage:
+    - acceptance_criterion_id: AC-1
+      scenario_ids: [TC-1]
+    - acceptance_criterion_id: AC-2
+      scenario_ids: [TC-2, TC-3, TC-6, TC-7]
+    - acceptance_criterion_id: AC-3
+      scenario_ids: [TC-4]
+    - acceptance_criterion_id: AC-4
+      scenario_ids: [TC-5]
+  issues_found_in_story: []
+  status: ready_for_code

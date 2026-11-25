@@ -1,0 +1,85 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "aisdlc/pivots/user-story.schema.yaml"
+title: "UserStory"
+description: >
+  Sortie du squad Specify. Entrée des squads Prototype et Quality (en parallèle).
+  Un fichier par story : docs/specify/<story-key>/user-story.yaml
+type: object
+required: [user_story]
+properties:
+  user_story:
+    type: object
+    required:
+      - key
+      - parent_opportunity
+      - as_a
+      - i_want
+      - so_that
+      - acceptance_criteria
+      - status
+    additionalProperties: false
+    properties:
+      key:
+        type: string
+        description: "Clé Jira Story, ex: AS2-12 (live) ou AISDLC-456 (exemples kit)"
+        pattern: "^(AS2|AISDLC)-[0-9]+$"
+      parent_opportunity:
+        type: string
+        description: "Clé de l'epic parent Jira AS2 (ou id opportunity kit)"
+      as_a:
+        type: string
+      i_want:
+        type: string
+      so_that:
+        type: string
+      acceptance_criteria:
+        type: array
+        minItems: 1
+        description: "AC-N Given/When/Then ; nombre non plafonné (Specify nov 2026)"
+        items:
+          type: object
+          required: [id, given, when, then]
+          properties:
+            id:
+              type: string
+              pattern: "^AC-[0-9]+$"
+            given: {type: string}
+            when: {type: string}
+            then: {type: string}
+            testable:
+              type: boolean
+              default: true
+      code_hints:
+        type: array
+        items:
+          type: object
+          required: [repo, path]
+          properties:
+            repo: {type: string}
+            path: {type: string, description: "glob accepté, ex: apps/web/src/checkout/**"}
+            note: {type: string}
+            caveat: {type: string}
+      design_hints:
+        type: array
+        items:
+          type: object
+          required: [file_key, node_id]
+          properties:
+            file_key: {type: string}
+            node_id: {type: string}
+            note: {type: string}
+      non_functional:
+        type: array
+        items:
+          type: string
+          description: "perf | a11y-AA | i18n | securite | rgpd | ..."
+      effort_estimate_days:
+        type: number
+        maximum: 3
+        description: "Optionnel — section absente du gabarit Specify (nov 2026) ; une estimation tokens/coût pourra arriver plus tard"
+      open_questions:
+        type: array
+        items: {type: string}
+      status:
+        type: string
+        enum: [drafted, enriched, ready_for_proto_and_qa]

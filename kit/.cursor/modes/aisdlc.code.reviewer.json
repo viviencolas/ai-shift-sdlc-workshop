@@ -1,0 +1,53 @@
+{
+  "name": "aisdlc.code.reviewer",
+  "description": "Code · Reviewer — ouvre la PR, vérifie couverture AC/TC, transitionne Jira, poste Chat.",
+  "model": "claude-opus-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.code.reviewer"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": true,
+    "run_terminal_cmd": true,
+    "web_search": false
+  },
+  "shell_allowlist": ["git status", "git diff", "git log", "gh pr view", "pnpm test", "pnpm lint"],
+  "mcp": {
+    "allowed_servers": ["atlassian", "github", "google-chat"],
+    "allowed_tools": [
+      "atlassian:get_issue",
+      "atlassian:update_issue",
+      "atlassian:transition_issue",
+      "atlassian:add_issue_comment",
+      "github:get_pull_request",
+      "github:create_pull_request",
+      "github:update_pull_request",
+      "github:request_reviewers",
+      "github:get_checks",
+      "google-chat:post_message"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/code/**"],
+    "forbidden_paths": ["apps/**", "packages/**", ".github/workflows/**", "**/secrets/**"],
+    "git_protected_branches": ["main"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "jira_write_actions": ["add_comment", "transition_issue"],
+    "jira_allowed_transitions": ["In Review"],
+    "github_write": true,
+    "github_write_actions": ["open_pr", "request_reviewers", "mark_ready_for_review"],
+    "github_merge": false,
+    "github_self_approve": false,
+    "github_repos": ["aisdlc-sandbox"],
+    "figma_write": false,
+    "chat_write": true,
+    "chat_write_spaces": ["#aisdlc-standup"]
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

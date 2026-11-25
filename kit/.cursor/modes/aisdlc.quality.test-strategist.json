@@ -1,0 +1,36 @@
+{
+  "name": "aisdlc.quality.test-strategist",
+  "description": "Quality · Test Strategist — dessine la stratégie de test (niveaux, env, data, risques).",
+  "model": "claude-sonnet-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.quality.test-strategist"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": false,
+    "run_terminal_cmd": false,
+    "web_search": false
+  },
+  "mcp": {
+    "allowed_servers": ["atlassian"],
+    "allowed_tools": [
+      "atlassian:get_issue",
+      "atlassian:search_issues"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/quality/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "github_write": false,
+    "figma_write": false,
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

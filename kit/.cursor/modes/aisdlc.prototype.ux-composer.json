@@ -1,0 +1,43 @@
+{
+  "name": "aisdlc.prototype.ux-composer",
+  "description": "Prototype · UX Composer — crée les frames Figma à partir du design system AI SDLC DS.",
+  "model": "claude-sonnet-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.prototype.ux-composer"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": false,
+    "run_terminal_cmd": false,
+    "web_search": false
+  },
+  "mcp": {
+    "allowed_servers": ["atlassian", "figma"],
+    "allowed_tools": [
+      "atlassian:get_issue",
+      "figma:get_file",
+      "figma:get_metadata",
+      "figma:create_frame",
+      "figma:create_component_instance",
+      "figma:set_node_properties",
+      "figma:set_node_description"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/prototype/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "github_write": false,
+    "figma_write": true,
+    "figma_files_writable": ["AISDLC — Prototypes"],
+    "figma_files_readonly": ["AI SDLC DS"],
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

@@ -1,0 +1,100 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "aisdlc/pivots/test-plan.schema.yaml"
+title: "TestPlan"
+description: >
+  Sortie du squad Quality. Consommé par le squad Code (bout de chaîne).
+  Un fichier par story : docs/quality/<story-key>/test-plan.yaml
+type: object
+required: [test_plan]
+properties:
+  test_plan:
+    type: object
+    required: [story_key, strategy, scenarios, coverage, status]
+    additionalProperties: false
+    properties:
+      story_key:
+        type: string
+        pattern: "^AISDLC-[0-9]+$"
+      strategy:
+        type: object
+        required: [levels, automation_target, environments, data_requirements]
+        properties:
+          levels:
+            type: array
+            minItems: 1
+            items:
+              type: string
+              enum: [unit, integration, e2e, manual_exploratory]
+          automation_target:
+            type: string
+            enum: [full, partial, manual_only]
+          environments:
+            type: array
+            minItems: 1
+            items:
+              type: string
+              enum: [dev, staging, prod_like]
+          data_requirements:
+            type: array
+            items: {type: string}
+          risks:
+            type: array
+            items:
+              type: object
+              required: [description, ac_ref]
+              properties:
+                description: {type: string}
+                ac_ref: {type: string, pattern: "^AC-[0-9]+$"}
+      scenarios:
+        type: array
+        minItems: 1
+        items:
+          type: object
+          required: [id, given, when, then, type, covers_acceptance_criteria, automated]
+          properties:
+            id:
+              type: string
+              pattern: "^TC-[0-9]+$"
+            given: {type: string}
+            when: {type: string}
+            then: {type: string}
+            type:
+              type: string
+              enum: [happy_path, edge_case, negative, non_functional]
+            covers_acceptance_criteria:
+              type: array
+              minItems: 1
+              items: {type: string, pattern: "^AC-[0-9]+$"}
+            automated: {type: boolean}
+      coverage:
+        type: array
+        description: "Matrice AC → TC, un item par AC"
+        items:
+          type: object
+          required: [acceptance_criterion_id, scenario_ids]
+          properties:
+            acceptance_criterion_id:
+              type: string
+              pattern: "^AC-[0-9]+$"
+            scenario_ids:
+              type: array
+              minItems: 1
+              items: {type: string, pattern: "^TC-[0-9]+$"}
+      issues_found_in_story:
+        type: array
+        items:
+          type: object
+          required: [type, excerpt, proposed_fix]
+          properties:
+            type:
+              type: string
+              enum: [missing_value, contradiction, untestable, ambiguous_term, unverifiable_reference]
+            excerpt: {type: string}
+            location: {type: string}
+            severity:
+              type: string
+              enum: [blocker, major, minor]
+            proposed_fix: {type: string}
+      status:
+        type: string
+        enum: [drafted, ambiguities_raised, ready_for_code]

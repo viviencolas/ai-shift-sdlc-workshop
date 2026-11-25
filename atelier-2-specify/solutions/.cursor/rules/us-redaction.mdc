@@ -1,0 +1,19 @@
+---
+description: Rédaction des user stories de l'atelier Specify (AS2)
+alwaysApply: true
+---
+
+- Rédige les user stories et tout le texte métier en français,
+  y compris les titres des scénarios.
+- Récit au format : En tant que … / Je veux … / Afin de …
+- Critères d'acceptation numérotés AC-1, AC-2…, autant que nécessaire.
+  Chacun a un seul Given, un seul When et un seul Then. Seuls ces
+  mots-clés Gherkin (et Feature, Scenario) restent en anglais.
+  Une liste très longue signale une story à redécouper.
+- N'invente jamais un chiffre, une cible, une date, une règle métier,
+  un persona ou une source.
+- Les seuls chiffres admis sont ceux écrits dans l'epic ou validés
+  par le PO dans le chat. Une cible inconnue s'écrit « à préciser » ;
+  tout autre manque est noté « à clarifier ».
+- Exception : l'Estimation IA reprend le barème indicatif du template
+  (XS à XL, en tokens), présenté comme à calibrer au jour 5.

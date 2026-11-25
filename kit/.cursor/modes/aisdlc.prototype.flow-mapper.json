@@ -1,0 +1,37 @@
+{
+  "name": "aisdlc.prototype.flow-mapper",
+  "description": "Prototype · Flow Mapper — déduit les user flows (étapes, branches, erreurs) des US.",
+  "model": "claude-sonnet-5-5-high",
+  "rules": [
+    "aisdlc.team.base",
+    "aisdlc.prototype.flow-mapper"
+  ],
+  "tools": {
+    "read_file": true,
+    "edit_file": true,
+    "list_dir": true,
+    "grep_search": true,
+    "codebase_search": false,
+    "run_terminal_cmd": false,
+    "web_search": false
+  },
+  "mcp": {
+    "allowed_servers": ["atlassian", "figma"],
+    "allowed_tools": [
+      "atlassian:get_issue",
+      "figma:get_file",
+      "figma:get_metadata"
+    ]
+  },
+  "scope": {
+    "write_paths": ["docs/prototype/**"],
+    "forbidden_paths": [".github/**", "main", "**/secrets/**"],
+    "jira_project": "AISDLC",
+    "jira_write_types": [],
+    "github_write": false,
+    "figma_write": false,
+    "chat_write": false
+  },
+  "auto_apply_edits": false,
+  "auto_run_commands": false
+}

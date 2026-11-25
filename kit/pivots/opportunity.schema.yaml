@@ -1,0 +1,81 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "aisdlc/pivots/opportunity.schema.yaml"
+title: "Opportunity"
+description: >
+  Sortie du squad Discover, entrée du squad Specify.
+  Un fichier par opportunité : docs/discover/<opportunity-id>/opportunity.yaml
+type: object
+required: [opportunity]
+properties:
+  opportunity:
+    type: object
+    required: [id, title, parent_jira_key, problem, target_user, evidence, rice, status, owner]
+    additionalProperties: false
+    properties:
+      id:
+        type: string
+        description: "Slug kebab-case, ex: checkout-mobile-abandon"
+        pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+      title:
+        type: string
+        maxLength: 80
+      parent_jira_key:
+        type: string
+        description: "Clé du ticket Jira Opportunity, ex: AISDLC-123"
+        pattern: "^AISDLC-[0-9]+$"
+      problem:
+        type: string
+        description: "2 à 5 phrases, sourcées"
+      target_user:
+        type: string
+        description: "Persona ou segment visé"
+      evidence:
+        type: array
+        minItems: 3
+        items:
+          type: object
+          required: [source_id, kind, excerpt, date]
+          properties:
+            source_id:
+              type: string
+              description: "jira-key | chat-url | confluence-id | interview-id"
+            kind:
+              type: string
+              enum: [support_ticket, chat_verbatim, interview, nps, analytics]
+            excerpt:
+              type: string
+              description: "Verbatim brut"
+            date:
+              type: string
+              format: date
+      pains:
+        type: array
+        items: {type: string}
+      jobs_to_be_done:
+        type: array
+        items: {type: string}
+      rice:
+        type: object
+        required: [reach, impact, confidence, effort_days, score]
+        properties:
+          reach: {type: [number, "null"]}
+          impact:
+            type: [number, "null"]
+            enum: [0.25, 0.5, 1, 2, 3, null]
+          confidence:
+            type: [number, "null"]
+            minimum: 0
+            maximum: 1
+          effort_days: {type: [number, "null"]}
+          score:
+            type: [number, "null"]
+            description: "auto = reach × impact × confidence / effort_days"
+      open_questions:
+        type: array
+        items: {type: string}
+      owner:
+        type: string
+        description: "Lead de l'opportunity (nom ou identifiant)"
+      status:
+        type: string
+        enum: [discovered, scored, selected_for_specify]
