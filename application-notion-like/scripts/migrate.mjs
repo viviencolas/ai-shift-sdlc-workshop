@@ -1,4 +1,4 @@
-// Applique migrations/*.sql sur la base Postgres de la plateforme (DATABASE_URL). Sans DATABASE_URL, ne fait rien :
+// Applique migrations/*.sql sur la base Postgres (DATABASE_URL, fournie par l'intégration Neon sur Vercel). Sans DATABASE_URL, ne fait rien :
 // en local, la base PGlite applique elle-même les migrations au démarrage (src/server/db.ts).
 import { readdir, readFile } from "node:fs/promises";
 import pg from "pg";
@@ -7,6 +7,10 @@ const url = process.env.DATABASE_URL?.trim() ?? "";
 const files = (await readdir("migrations").catch(() => []))
   .filter((f) => f.endsWith(".sql"))
   .sort();
+if (url === "" && process.env.VERCEL) {
+  console.error("migrate: DATABASE_URL manquant. Ajoutez l'intégration Neon au projet Vercel (Storage), puis redéployez.");
+  process.exit(1);
+}
 if (url === "" || files.length === 0) {
   console.log("migrate: nothing to do");
   process.exit(0);

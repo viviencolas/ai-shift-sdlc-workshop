@@ -1,11 +1,11 @@
 import { mkdir, readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { PGlite } from "@electric-sql/pglite";
+import type { PGlite } from "@electric-sql/pglite";
 import pg from "pg";
 
 /**
  * Accès à la base : un seul point d'entrée, sql(texte, paramètres).
- * - DATABASE_URL défini (plateforme de publication) : Postgres, schéma appliqué au build par scripts/migrate.mjs.
+ * - DATABASE_URL défini (Vercel + Neon) : Postgres, schéma appliqué au build par scripts/migrate.mjs.
  * - Sinon (développement local, tests) : PGlite, un Postgres embarqué, stocké dans PGLITE_DIR
  *   (par défaut data/pglite ; "memory://" pour une base jetable), migrations appliquées au démarrage.
  * Toujours passer les valeurs en paramètres ($1, $2…), jamais par concaténation.
@@ -19,8 +19,11 @@ let local: Promise<PGlite> | undefined;
 export async function sql<T = Record<string, unknown>>(text: string, params: unknown[] = []): Promise<T[]> {
   const databaseUrl = process.env.DATABASE_URL?.trim() ?? "";
   if (databaseUrl !== "") {
-    pool ??= new pg.Pool({ connectionString: databaseUrl, max: 5 });
+    pool ??= new pg.Pool({ connectionString: databaseUrl, max: 3, idleTimeoutMillis: 10_000 });
     return (await pool.query(text, params)).rows as T[];
+  }
+  if (process.env.VERCEL) {
+    throw new Error("DATABASE_URL manquant : ajoutez l'intégration Neon au projet Vercel.");
   }
   local ??= startLocal().catch((error: unknown) => {
     local = undefined;
@@ -32,6 +35,7 @@ export async function sql<T = Record<string, unknown>>(text: string, params: unk
 async function startLocal(): Promise<PGlite> {
   const dir = process.env.PGLITE_DIR ?? join("data", "pglite");
   if (!dir.startsWith("memory://")) await mkdir(dir, { recursive: true });
+  const { PGlite } = await import("@electric-sql/pglite");
   const db = new PGlite(dir);
   await db.exec(
     "create table if not exists schema_migrations (name text primary key, applied_at timestamptz not null default now())",
