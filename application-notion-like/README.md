@@ -2,62 +2,52 @@
 
 Petite application de type Notion : des **pages** faites de blocs simples (titre, texte, liste à puces), avec création, édition, suppression et navigation entre pages. C'est la base sur laquelle les participants ajoutent des fonctionnalités pendant les ateliers.
 
-**Stack** : Node 20+ (testé en 22), TypeScript, serveur `node:http` sans framework, front TypeScript sans framework, données dans un fichier JSON local (serveur) ou dans le navigateur (version statique). Aucune base externe, aucune clé, aucune donnée personnelle.
+**Stack** : Node 20+ (testé en 22), TypeScript, serveur `node:http` sans framework en local, front TypeScript sans framework, données dans **Postgres** (PGlite, un Postgres embarqué, en local). Dépendances : `pg` et `@electric-sql/pglite`. Aucune clé, aucune donnée personnelle.
 
-## Lancer, tester, héberger
+## Lancer, tester
 
 ```bash
 cd application-notion-like
 npm install
 npm run dev        # compile puis démarre sur http://localhost:3000
-npm test           # tests unitaires et API (node:test)
+npm test           # tests du modèle de page et de l'API (base jetable en mémoire)
 npm run typecheck  # vérification des types, serveur et front
 ```
 
-Variables optionnelles (voir `.env.example`) : `PORT` (3000), `DATA_FILE` (`data/db.json`). Le fichier de données est créé au premier démarrage avec une page d'exemple ; supprimez `data/` pour repartir de zéro.
+En local, la base est un dossier `data/pglite` créé au premier démarrage, avec une page d'exemple ; supprimez `data/` pour repartir de zéro. Variables optionnelles (voir `.env.example`) : `PORT` (3000), `PGLITE_DIR` (`data/pglite`, ou `memory://` pour une base jetable).
 
-### Version statique (démo en ligne)
+## Base de données et publication
 
-```bash
-npm run start:static   # construit dist-static/ puis sert http://localhost:4000/application/
-```
-
-Même interface, sans serveur : les pages sont enregistrées dans le `localStorage` du navigateur, avec les mêmes règles que le serveur (`src/shared/pages.ts`). Le serveur Node reste utilisé pour le développement local.
-
-**Limite : chaque navigateur a ses propres pages.** La démo ne partage aucune donnée entre personnes ni entre appareils, et vider les données du site efface les pages.
-
-### Hébergement : GitHub Pages
-
-Le workflow `.github/workflows/pages.yml` (à la racine du dépôt) teste et construit la version statique, puis, à chaque push sur `main`, publie un site combiné : le guide à la racine et l'application dans `/application/`. URL attendue : `https://viviencolas.github.io/ai-shift-sdlc-workshop/application/`.
-
-Activation, une seule fois, par un administrateur du dépôt : **Settings > Pages > Build and deployment > Source : GitHub Actions**. Sur une pull request, le workflow teste et construit sans déployer.
-
-Le serveur Node peut aussi être hébergé tel quel (par exemple Render, voir `render.yaml`), avec des données éphémères sur l'offre gratuite.
+- Le schéma est dans `migrations/NNN_nom.sql` (additif uniquement : créer des tables ou ajouter des colonnes, ne jamais modifier une migration déjà publiée, ajouter un nouveau fichier). En local, PGlite les applique au démarrage ; en ligne, `npm run build` exécute `scripts/migrate.mjs` sur la base Postgres fournie par la plateforme.
+- `cursor-app.json` (`{ "database": "postgres" }`) demande cette base à la plateforme de publication Cursor, qui fournit `DATABASE_URL`. Cette variable ne doit jamais être écrite dans le dépôt ni dans un `.env`.
+- Les requêtes passent toutes par `sql(texte, paramètres)` dans `src/server/db.ts` : Postgres si `DATABASE_URL` est défini, PGlite sinon. Toujours passer les valeurs en paramètres (`$1`, `$2`…).
+- En ligne, l'API est servie par la fonction `api/[...path].js`, qui appelle le même handler que le serveur local. Les données sont partagées entre tous les visiteurs de l'application publiée.
 
 ## Architecture
 
 ```
 src/
-  shared/             Code commun au serveur et au navigateur (aucune API Node)
-    types.d.ts        Modèle de données (Page, Block, Database…)
-    pages.ts          Modèle de page : règles et validation (création, édition, suppression)
-    errors.ts         HttpError (code HTTP + message en français)
+  shared/
+    types.d.ts        Modèle de données (Page, Block, PageSummary)
+    validation.ts     Validation des titres et des blocs (pure, sans base ni HTTP)
   server/
-    index.ts          Point d'entrée : lit PORT et DATA_FILE, démarre le serveur
-    app.ts            Serveur HTTP : routes /api/*, fichiers statiques de public/
-    storage.ts        Stockage : charge et écrit data/db.json (écriture atomique)
+    index.ts          Serveur local : fichiers de public/ et routes /api/*
+    handler.ts        Routes de l'API en signature web (Request -> Response), partagées avec la fonction publiée
+    pages.ts          Modèle de page : règles métier et requêtes SQL (création, édition, suppression)
+    db.ts             Accès à la base : sql(), Postgres ou PGlite, migrations locales
+    errors.ts         HttpError (code HTTP + message en français)
   client/
     app.ts            Écrans : liste des pages, lecture, édition, navigation par hash (#/pages/<id>)
-    api.ts            Accès aux données : API HTTP (serveur) ou localStorage (version statique)
+    api.ts            Appels à l'API
     dom.ts            Petits utilitaires DOM (création d'éléments, message d'erreur, dates)
+api/[...path].js      Fonction de la plateforme (utilise dist/server/handler.js)
+migrations/           Schéma SQL et page d'exemple
+scripts/migrate.mjs   Applique les migrations sur Postgres au build
 public/               index.html et style.css ; le front compilé va dans public/js/
-scripts/              build-static.mjs (version statique), serve-static.mjs (test local)
-tests/                Tests node:test : modèle de page (pages.test.ts) et API HTTP (api.test.ts)
+tests/                Tests node:test : modèle de page (pages.test.ts) et API (api.test.ts)
 ```
 
-En mode statique, `client/api.ts` appelle directement ces mêmes fonctions de `shared/pages.ts` et enregistre la base dans le `localStorage` : il n'y a pas de serveur ni de routes `/api`. Le choix du mode se fait par `<meta name="app-storage">` dans `index.html` (`server` en développement, `local` dans la version statique).
-
-Flux d'une requête : `app.ts` lit la requête, appelle une fonction de `shared/pages.ts` sur la base en mémoire (`store.data`), puis `store.save()` écrit le fichier JSON. Les erreurs de validation sont des `HttpError` renvoyées en JSON `{ "error": "…" }`.
+Flux d'une requête : `handler.ts` lit la requête, appelle une fonction de `pages.ts`, qui valide l'entrée (`shared/validation.ts`) puis interroge la base avec `sql()`. Les erreurs sont des `HttpError` renvoyées en JSON `{ "error": "…" }`.
 
 ### API (JSON)
 
@@ -71,11 +61,11 @@ Flux d'une requête : `app.ts` lit la requête, appelle une fonction de `shared/
 
 ### Où ajouter une fonctionnalité
 
-Données : `src/shared/types.d.ts` · règles : un nouveau module à côté de `shared/pages.ts`, utilisable par le serveur et par la version statique · routes : `app.ts` · écran : `src/client/` · tests : un fichier `tests/*.test.ts`. Le build compile `src/` vers `dist/` (serveur) et `public/js/` (front). Une fonctionnalité qui passe par une route `/api` n'existe pas dans la version statique tant que `client/api.ts` ne la fournit pas aussi en `localStorage`.
+Données : une nouvelle migration `migrations/NNN_….sql` et `src/shared/types.d.ts` · règles et requêtes : un nouveau module à côté de `pages.ts` · routes : `handler.ts` · écran : `src/client/` · tests : un fichier `tests/*.test.ts`. Le build compile `src/` vers `dist/` (serveur) et `public/js/` (front).
 
 ## Pour les animateurs
 
-Une solution de référence complète existe sur la branche `solution-commentaires` du dépôt. Ne pas la partager aux participants avant la fin de l'atelier.
+Une solution de référence complète existe sur la branche `solution-commentaires` du dépôt. Ne pas la partager aux participants avant la fin de l'atelier. Elle date d'avant le passage à Postgres : elle stocke dans un fichier JSON.
 
 ## Suivi
 

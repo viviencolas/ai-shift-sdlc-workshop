@@ -1,6 +1,5 @@
 node_modules/
 dist/
-dist-static/
 public/js/
 data/
 .env
