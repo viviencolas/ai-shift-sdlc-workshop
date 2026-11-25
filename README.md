@@ -6,64 +6,65 @@ Supports de la semaine d'ateliers **AI SDLC** (7 au 11 décembre 2026) : cinq jo
 DISCOVER → SPECIFY → PROTOTYPE ∥ QUALITY → CODE
 ```
 
-| Jour | Atelier | Animateur | Ce qui est produit |
-|------|---------|-----------|--------------------|
-| 1 · lun. 7 déc. | Discover | Ilyasse EL KHAIRA | Une epic Jira, MCP Atlassian connecté |
-| 2 · mar. 8 déc. | Specify | Vivien COLAS | Des stories prêtes à prototyper (`prete` / `brouillon`) |
-| 3 · mer. 9 déc. | Prototype | Yassine AQEJJAJ | Prototype Figma cliquable (`figma.yaml`) |
-| 4 · jeu. 10 déc. | Quality | Ismael TRAORE | Stories désambiguïsées, plan de test |
-| 5 · ven. 11 déc. | Code | Patrick BLOT | PR verte, estimation IA calibrée |
+**Guide participant en ligne : <https://viviencolas.github.io/ai-shift-sdlc-workshop/>**
 
-> Les pages des jours 1, 4 et 5 contiennent encore des encadrés « À compléter par l'animateur » : elles sont publiées telles quelles.
+## Sommaire du dépôt
 
-## Ouvrir le guide participant
+| Dossier | À quoi il sert |
+|---------|----------------|
+| [`guide-participant/`](guide-participant/README.md) | Le guide des cinq jours, publié en site web (GitHub Pages) |
+| [`ateliers/`](ateliers/README.md) | Un dossier par atelier, numéroté : guide animateur, supports, solutions, package |
+| &nbsp;&nbsp;[`ateliers/01-discover/`](ateliers/01-discover/README.md) | Lundi · Discover |
+| &nbsp;&nbsp;[`ateliers/02-specify/`](ateliers/02-specify/README.md) | Mardi · Specify (supports, solutions de secours, package participant) |
+| &nbsp;&nbsp;[`ateliers/03-prototype/`](ateliers/03-prototype/README.md) | Mercredi · Prototype (pack installable) |
+| &nbsp;&nbsp;[`ateliers/04-quality/`](ateliers/04-quality/README.md) | Jeudi · Quality |
+| &nbsp;&nbsp;[`ateliers/05-code/`](ateliers/05-code/README.md) | Vendredi · Code |
+| [`kit-cursor/`](kit-cursor/README.md) | Le kit Cursor partagé par toute la semaine : modes, rules, configuration MCP, schémas, installateur |
+| [`reference/`](reference/README.md) | Références transverses (catalogue des agents) |
+| [`application-notion-like/`](application-notion-like/README.md) | Emplacement du code de l'application « notion like » (README seulement pour l'instant) |
 
-- **En local** : ouvrir [`guide/index.html`](guide/index.html) dans un navigateur (ou `python3 -m http.server` à la racine, puis `http://localhost:8000/`).
-- **GitHub Pages** : le dépôt est prêt (un `index.html` racine redirige vers le guide, `.nojekyll` est présent). Pour l'activer : *Settings → Pages → Deploy from a branch → `main` / `(root)`*. Le guide sera alors à `https://viviencolas.github.io/ai-shift-sdlc-workshop/`.
+Fichiers à la racine : [`CONTRIBUTING.md`](CONTRIBUTING.md) (où chaque animateur dépose son atelier), `index.html` (redirige vers le guide, pour GitHub Pages), `.nojekyll` et `.gitignore`.
+
+## Les cinq ateliers
+
+| Jour | Atelier | Animateur | Ce qui est produit | Dossier | Page du guide |
+|------|---------|-----------|--------------------|---------|---------------|
+| Lun. 7 déc. | Discover | Ilyasse EL KHAIRA | Une epic Jira, MCP Atlassian connecté | [`01-discover`](ateliers/01-discover/README.md) | [jour 1](guide-participant/jour-1-discover.html) |
+| Mar. 8 déc. | Specify | Vivien COLAS | Des stories prêtes à prototyper (`prete` / `brouillon`) | [`02-specify`](ateliers/02-specify/README.md) | [jour 2](guide-participant/jour-2-specify.html) |
+| Mer. 9 déc. | Prototype | Yassine AQEJJAJ | Prototype Figma cliquable (`figma.yaml`) | [`03-prototype`](ateliers/03-prototype/README.md) | [jour 3](guide-participant/jour-3-prototype.html) |
+| Jeu. 10 déc. | Quality | Ismael TRAORE | Stories désambiguïsées, plan de test | [`04-quality`](ateliers/04-quality/README.md) | [jour 4](guide-participant/jour-4-quality.html) |
+| Ven. 11 déc. | Code | Patrick BLOT | PR verte, estimation IA calibrée | [`05-code`](ateliers/05-code/README.md) | [jour 5](guide-participant/jour-5-code.html) |
+
+> Les pages des jours 1, 3, 4 et 5 contiennent encore des encadrés « À compléter par l'animateur » : elles sont publiées telles quelles.
+
+## Ouvrir le guide
+
+- **En ligne** : <https://viviencolas.github.io/ai-shift-sdlc-workshop/>.
+- **En local** : ouvrir [`guide-participant/index.html`](guide-participant/index.html) dans un navigateur, ou lancer `python3 -m http.server` à la racine puis aller sur `http://localhost:8000/`.
 
 ## Arborescence
 
 ```
 .
-├── README.md                     ← vous êtes ici
-├── CONTRIBUTING.md               ← où chaque animateur dépose son atelier
-├── index.html                    ← redirection vers le guide (GitHub Pages)
-├── guide/                        ← guide participant des 5 jours
-│   ├── index.html
-│   └── jour-1-discover.html … jour-5-code.html
-├── atelier-2-specify/            ← atelier du jour 2
-│   ├── guide-participant.html    ← redirection vers guide/jour-2-specify.html
-│   ├── support/                  ← supports de présentation (2 parties)
-│   ├── solutions/                ← solutions de secours (.cursor/ + README)
-│   └── package/                  ← kit participant (.cursor/, README, specify-cursor-kit.zip)
-├── kit/                          ← kit Cursor AI SDLC partagé
-│   ├── .cursor/                  ← 17 modes, 18 rules, mcp.json
-│   ├── pivots/  examples/        ← schémas et exemples YAML
-│   ├── ateliers/                 ← guides animateur (discover, specify, prototype, quality, code)
-│   ├── atelier-3-prototype/      ← pack installable Prototype (+ .zip)
-│   └── install.sh
-├── docs/
-│   └── catalogue-agents-plugins.md
-├── media/                        ← captures d'écran (guide, atelier 2)
-└── app/                          ← emplacement du code de l'application « notion like »
-    └── README.md
+├── README.md  CONTRIBUTING.md  index.html  .nojekyll  .gitignore
+├── guide-participant/            guide des 5 jours (site)
+│   ├── index.html  jour-1-discover.html … jour-5-code.html
+│   └── captures/
+├── ateliers/
+│   ├── 01-discover/              guide-animateur.md
+│   ├── 02-specify/               guide-animateur.md, guide-participant.html (redirection)
+│   │   ├── supports/             2 présentations HTML
+│   │   ├── solutions/            .cursor/ de secours + README
+│   │   ├── package/              .cursor/ + README + specify-cursor-kit.zip
+│   │   └── captures/
+│   ├── 03-prototype/             guide-animateur.md, pack-prototype.zip
+│   │   └── pack-prototype/       pack installable (.cursor/, skills/, pivots/, examples/, install.sh)
+│   ├── 04-quality/               guide-animateur.md
+│   └── 05-code/                  guide-animateur.md
+├── kit-cursor/                   .cursor/ (17 modes, 18 rules, mcp.json), pivots/, examples/, install.sh
+├── reference/                    catalogue-agents-plugins.md
+└── application-notion-like/      README.md (pas de code)
 ```
-
-## Ateliers
-
-| Atelier | Contenu dans le dépôt |
-|---------|-----------------------|
-| 1 · Discover | [page du guide](guide/jour-1-discover.html) · [guide animateur](kit/ateliers/discover/facilitator-guide.md) |
-| 2 · Specify | [page du guide](guide/jour-2-specify.html) · [supports](atelier-2-specify/support/) · [solutions](atelier-2-specify/solutions/README.md) · [package participant](atelier-2-specify/package/README.md) · [guide animateur](kit/ateliers/specify/facilitator-guide.md) |
-| 3 · Prototype | [page du guide](guide/jour-3-prototype.html) · [pack Prototype](kit/atelier-3-prototype/README.md) · [guide animateur](kit/ateliers/prototype/facilitator-guide.md) |
-| 4 · Quality | [page du guide](guide/jour-4-quality.html) · [guide animateur](kit/ateliers/quality/facilitator-guide.md) |
-| 5 · Code | [page du guide](guide/jour-5-code.html) · [guide animateur](kit/ateliers/code/facilitator-guide.md) |
-
-Ressources transverses : [kit Cursor AI SDLC](kit/README.md) · [catalogue des agents](docs/catalogue-agents-plugins.md).
-
-## Application « notion like »
-
-Le code de l'application développée pendant la semaine ira dans [`app/`](app/README.md), qui explique ce qui doit y être déposé, comment la lancer et où trouver le suivi. Le dossier ne contient aucun code pour l'instant.
 
 ## Conventions
 
