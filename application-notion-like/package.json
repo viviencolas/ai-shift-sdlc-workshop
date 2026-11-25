@@ -1,0 +1,20 @@
+{
+  "name": "notion-like",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Application de type Notion : pages, blocs simples et commentaires en fil",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.server.json && tsc -p tsconfig.client.json",
+    "start": "node dist/server/index.js",
+    "dev": "npm run build && npm start",
+    "test": "node --import tsx --test --test-reporter=spec tests/*.test.ts",
+    "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.client.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.7",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.0"
+  }
+}
