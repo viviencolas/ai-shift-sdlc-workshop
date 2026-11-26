@@ -1,91 +1,78 @@
 import { randomUUID } from "node:crypto";
-import type { Block, BlockType, Database, Page, PageSummary } from "../shared/types.js";
+import type { Block, Page, PageSummary } from "../shared/types.js";
+import { cleanBlocks, cleanTitle, ValidationError } from "../shared/validation.js";
+import { sql } from "./db.js";
 import { HttpError } from "./errors.js";
 
-/**
- * Modèle de page : règles métier et validation, sans HTTP ni fichier.
- * Chaque fonction reçoit la base en mémoire ; la persistance est faite par l'appelant (voir app.ts).
- */
+/** Modèle de page : règles métier et requêtes SQL (table pages, voir migrations/). */
 
-const BLOCK_TYPES: readonly BlockType[] = ["heading", "paragraph", "bullet"];
-const MAX_TITLE = 200;
-const MAX_BLOCK_TEXT = 5000;
-const MAX_BLOCKS = 500;
+const MAX_PAGES = 500;
 
-function cleanText(value: unknown, label: string, max: number, allowEmpty = false): string {
-  if (typeof value !== "string") throw new HttpError(400, `${label} : texte attendu.`);
-  const text = value.trim();
-  if (!allowEmpty && text.length === 0) throw new HttpError(400, `${label} : ne peut pas être vide.`);
-  if (text.length > max) throw new HttpError(400, `${label} : ${max} caractères maximum.`);
-  return text;
+interface PageRow {
+  id: string;
+  title: string;
+  blocks: Block[];
+  created_at: Date | string;
+  updated_at: Date | string;
 }
 
-function cleanBlocks(value: unknown): Block[] {
-  if (!Array.isArray(value)) throw new HttpError(400, "Blocs : liste attendue.");
-  if (value.length > MAX_BLOCKS) throw new HttpError(400, `Blocs : ${MAX_BLOCKS} maximum.`);
-  return value.map((raw: unknown) => {
-    const item = (raw ?? {}) as Record<string, unknown>;
-    if (!BLOCK_TYPES.includes(item.type as BlockType)) throw new HttpError(400, "Bloc : type inconnu.");
-    return {
-      id: typeof item.id === "string" && item.id.length > 0 ? item.id.slice(0, 64) : randomUUID(),
-      type: item.type as BlockType,
-      text: cleanText(item.text ?? "", "Bloc", MAX_BLOCK_TEXT, true),
-    };
-  });
+const toPage = (row: PageRow): Page => ({
+  id: row.id,
+  title: row.title,
+  blocks: row.blocks,
+  createdAt: new Date(row.created_at).toISOString(),
+  updatedAt: new Date(row.updated_at).toISOString(),
+});
+
+/** Convertit les erreurs de validation en réponses 400. */
+function validated<T>(run: () => T): T {
+  try {
+    return run();
+  } catch (err) {
+    if (err instanceof ValidationError) throw new HttpError(400, err.message);
+    throw err;
+  }
 }
 
-function findPage(db: Database, pageId: string): Page {
-  const page = db.pages.find((p) => p.id === pageId);
-  if (!page) throw new HttpError(404, "Page introuvable.");
-  return page;
+export async function listPages(): Promise<PageSummary[]> {
+  const rows = await sql<Pick<PageRow, "id" | "title" | "updated_at">>(
+    "select id, title, updated_at from pages order by updated_at desc, id limit $1",
+    [MAX_PAGES],
+  );
+  return rows.map((r) => ({ id: r.id, title: r.title, updatedAt: new Date(r.updated_at).toISOString() }));
 }
 
-export function listPages(db: Database): PageSummary[] {
-  return db.pages
-    .map((p) => ({ id: p.id, title: p.title, updatedAt: p.updatedAt }))
-    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+export async function getPage(id: string): Promise<Page> {
+  const [row] = await sql<PageRow>("select * from pages where id = $1", [id]);
+  if (!row) throw new HttpError(404, "Page introuvable.");
+  return toPage(row);
 }
 
-export function getPage(db: Database, pageId: string): Page {
-  return findPage(db, pageId);
+export async function createPage(input: { title?: unknown; blocks?: unknown }): Promise<Page> {
+  const title = validated(() => cleanTitle(input.title));
+  const blocks = validated(() => (input.blocks === undefined ? [] : cleanBlocks(input.blocks, randomUUID)));
+  const [count] = await sql<{ n: string | number }>("select count(*) as n from pages");
+  if (Number(count?.n ?? 0) >= MAX_PAGES) throw new HttpError(409, `Limite de ${MAX_PAGES} pages atteinte.`);
+  const [row] = await sql<PageRow>("insert into pages (id, title, blocks) values ($1, $2, $3::jsonb) returning *", [
+    randomUUID(),
+    title,
+    JSON.stringify(blocks),
+  ]);
+  return toPage(row as PageRow);
 }
 
-export function createPage(db: Database, input: { title?: unknown; blocks?: unknown }): Page {
-  const now = new Date().toISOString();
-  const page: Page = {
-    id: randomUUID(),
-    title: cleanText(input.title, "Titre", MAX_TITLE),
-    blocks: input.blocks === undefined ? [] : cleanBlocks(input.blocks),
-    createdAt: now,
-    updatedAt: now,
-  };
-  db.pages.push(page);
-  return page;
+export async function updatePage(id: string, input: { title?: unknown; blocks?: unknown }): Promise<Page> {
+  const current = await getPage(id);
+  const title = input.title === undefined ? current.title : validated(() => cleanTitle(input.title));
+  const blocks = input.blocks === undefined ? current.blocks : validated(() => cleanBlocks(input.blocks, randomUUID));
+  const [row] = await sql<PageRow>(
+    "update pages set title = $2, blocks = $3::jsonb, updated_at = now() where id = $1 returning *",
+    [id, title, JSON.stringify(blocks)],
+  );
+  return toPage(row as PageRow);
 }
 
-export function updatePage(db: Database, pageId: string, input: { title?: unknown; blocks?: unknown }): Page {
-  const page = findPage(db, pageId);
-  if (input.title !== undefined) page.title = cleanText(input.title, "Titre", MAX_TITLE);
-  if (input.blocks !== undefined) page.blocks = cleanBlocks(input.blocks);
-  page.updatedAt = new Date().toISOString();
-  return page;
-}
-
-export function deletePage(db: Database, pageId: string): void {
-  const page = findPage(db, pageId);
-  db.pages.splice(db.pages.indexOf(page), 1);
-}
-
-export function seedDatabase(): Database {
-  const db: Database = { pages: [] };
-  createPage(db, {
-    title: "Plan de lancement",
-    blocks: [
-      { type: "heading", text: "Objectifs" },
-      { type: "paragraph", text: "Lancer la première version auprès des équipes pilotes." },
-      { type: "bullet", text: "Pages avec blocs simples" },
-      { type: "bullet", text: "Création, édition et suppression de pages" },
-    ],
-  });
-  return db;
+export async function deletePage(id: string): Promise<void> {
+  const rows = await sql("delete from pages where id = $1 returning id", [id]);
+  if (rows.length === 0) throw new HttpError(404, "Page introuvable.");
 }

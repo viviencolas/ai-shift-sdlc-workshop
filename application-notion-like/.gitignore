@@ -3,3 +3,5 @@ dist/
 public/js/
 data/
 .env
+.vercel
+.env.local

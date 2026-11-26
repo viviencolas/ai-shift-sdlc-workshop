@@ -19,8 +19,3 @@ export interface PageSummary {
   title: string;
   updatedAt: string;
 }
-
-/** Contenu complet du fichier JSON de stockage. */
-export interface Database {
-  pages: Page[];
-}

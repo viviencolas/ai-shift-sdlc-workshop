@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "types": []
   },
-  "include": ["src/client", "src/shared"]
+  "include": ["src/client", "src/shared/types.d.ts"]
 }
