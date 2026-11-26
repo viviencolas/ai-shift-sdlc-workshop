@@ -21,7 +21,7 @@ DISCOVER → SPECIFY → PROTOTYPE ∥ QUALITY → CODE
 | &nbsp;&nbsp;[`ateliers/05-code/`](ateliers/05-code/README.md) | Vendredi · Code |
 | [`kit-cursor/`](kit-cursor/README.md) | Le kit Cursor partagé par toute la semaine : modes, rules, configuration MCP, schémas, installateur |
 | [`reference/`](reference/README.md) | Références transverses (catalogue des agents) |
-| [`application-notion-like/`](application-notion-like/README.md) | Emplacement du code de l'application « notion like » (README seulement pour l'instant) |
+| [`application-notion-like/`](application-notion-like/README.md) | Le produit existant « notion like » (code, migrations, tests), en ligne sur Vercel |
 
 Fichiers à la racine : [`CONTRIBUTING.md`](CONTRIBUTING.md) (où chaque animateur dépose son atelier), `index.html` (redirige vers le guide, pour GitHub Pages), `.nojekyll` et `.gitignore`.
 
@@ -48,7 +48,7 @@ Fichiers à la racine : [`CONTRIBUTING.md`](CONTRIBUTING.md) (où chaque animate
 .
 ├── README.md  CONTRIBUTING.md  index.html  .nojekyll  .gitignore
 ├── guide-participant/            guide des 5 jours (site)
-│   ├── index.html  jour-1-discover.html … jour-5-code.html
+│   ├── index.html  jour-1-discover.html … jour-5-code.html  produit-notion-like.html
 │   └── captures/
 ├── ateliers/
 │   ├── 01-discover/              guide-animateur.md
@@ -63,7 +63,7 @@ Fichiers à la racine : [`CONTRIBUTING.md`](CONTRIBUTING.md) (où chaque animate
 │   └── 05-code/                  guide-animateur.md
 ├── kit-cursor/                   .cursor/ (17 modes, 18 rules, mcp.json), pivots/, examples/, install.sh
 ├── reference/                    catalogue-agents-plugins.md
-└── application-notion-like/      README.md (pas de code)
+└── application-notion-like/      le produit « notion like » : src/, migrations/, tests/, public/
 ```
 
 ## Conventions

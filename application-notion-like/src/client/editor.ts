@@ -363,7 +363,8 @@ export class BlockEditor {
       document.execCommand("insertText", false, event.clipboardData?.getData("text/plain") ?? "");
     });
     node.addEventListener("blur", () => window.setTimeout(() => {
-      if (this.slash && !this.slash.menu.contains(document.activeElement)) this.closeSlash();
+      const slash = this.slash;
+      if (slash && slash.blockId === block.id && document.activeElement !== node && !slash.menu.contains(document.activeElement)) this.closeSlash();
     }, 150));
     return node;
   }

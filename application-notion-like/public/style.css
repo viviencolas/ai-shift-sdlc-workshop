@@ -1232,3 +1232,7 @@ a {
 .modal-head + .search-bar {
   height: 44px;
 }
+
+.search-input::-webkit-search-cancel-button {
+  display: none;
+}
