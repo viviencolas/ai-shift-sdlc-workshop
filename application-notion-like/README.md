@@ -24,6 +24,8 @@ En local, la base est un dossier `data/pglite` créé au premier démarrage, ave
 
 ## Déployer sur Vercel (avec Neon)
 
+Démo en ligne : https://notion-like-theta.vercel.app (projet Vercel `notion-like`, base Neon `notion-like-db`).
+
 Le projet s'importe tel quel : `vercel.json` fixe la commande de build (`npm run build` : compilation, puis migrations) et le dossier de sortie (`public/`) ; les routes de l'API sont les fonctions `api/pages/index.js` et `api/pages/[id].js`. Seule variable nécessaire : `DATABASE_URL`, fournie par l'intégration Neon.
 
 Procédure (une fois, avec un compte GitHub) :
