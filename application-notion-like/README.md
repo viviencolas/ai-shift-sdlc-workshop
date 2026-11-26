@@ -24,7 +24,7 @@ En local, la base est un dossier `data/pglite` créé au premier démarrage, ave
 
 ## Déployer sur Vercel (avec Neon)
 
-Démo en ligne : https://notion-like-theta.vercel.app (projet Vercel `notion-like`, base Neon `notion-like-db`).
+Démo en ligne : https://notion-like-theta.vercel.app (projet Vercel `notion-like`, base Neon `notion-like-db`). Le projet est relié au dépôt GitHub avec la racine `application-notion-like` : chaque push sur une branche crée un déploiement de preview, et la production est mise à jour par les push sur `main`. Pour un déploiement manuel avec la CLI, lancer `vercel deploy --prod` depuis la racine du dépôt (et non depuis ce dossier), puisque la racine du projet est déjà réglée côté Vercel.
 
 Le projet s'importe tel quel : `vercel.json` fixe la commande de build (`npm run build` : compilation, puis migrations) et le dossier de sortie (`public/`) ; les routes de l'API sont les fonctions `api/pages/index.js` et `api/pages/[id].js`. Seule variable nécessaire : `DATABASE_URL`, fournie par l'intégration Neon.
 
