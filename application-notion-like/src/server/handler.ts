@@ -1,5 +1,5 @@
 import { HttpError } from "./errors.js";
-import { createPage, deletePage, getPage, listPages, updatePage } from "./pages.js";
+import { createPage, deletePage, getPage, listPages, listTrash, updatePage } from "./pages.js";
 
 /**
  * Routes de l'API, en signature web standard (Request -> Response) :
@@ -27,12 +27,13 @@ async function readJson(request: Request): Promise<Record<string, unknown>> {
 
 async function route(request: Request): Promise<Response> {
   const method = request.method;
-  const parts = new URL(request.url).pathname.split("/").filter(Boolean).slice(1);
+  const url = new URL(request.url);
+  const parts = url.pathname.split("/").filter(Boolean).slice(1);
 
   if (parts[0] === "pages") {
     const pageId = parts[1] === undefined ? undefined : decodeURIComponent(parts[1]);
     if (pageId === undefined && parts.length === 1) {
-      if (method === "GET") return json(200, await listPages());
+      if (method === "GET") return json(200, url.searchParams.get("trashed") === "1" ? await listTrash() : await listPages());
       if (method === "POST") return json(201, await createPage(await readJson(request)));
     } else if (pageId !== undefined && parts.length === 2) {
       if (method === "GET") return json(200, await getPage(pageId));
