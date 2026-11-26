@@ -1,4 +1,12 @@
-import type { Block, Page, PageSummary } from "../shared/types.js";
+import type { Block, CoverKey, Page, PageSummary } from "../shared/types.js";
+
+export interface PagePatch {
+  title?: string;
+  blocks?: Block[];
+  icon?: string | null;
+  cover?: CoverKey | null;
+  trashed?: boolean;
+}
 
 async function request<T>(path: string, method = "GET", body?: unknown): Promise<T> {
   const response = await fetch(`/api${path}`, {
@@ -14,8 +22,9 @@ async function request<T>(path: string, method = "GET", body?: unknown): Promise
 
 export const api = {
   listPages: () => request<PageSummary[]>("/pages"),
-  getPage: (id: string) => request<Page>(`/pages/${id}`),
-  createPage: (title: string, blocks: Block[] = []) => request<Page>("/pages", "POST", { title, blocks }),
-  updatePage: (id: string, title: string, blocks: Block[]) => request<Page>(`/pages/${id}`, "PUT", { title, blocks }),
-  deletePage: (id: string) => request<void>(`/pages/${id}`, "DELETE"),
+  listTrash: () => request<PageSummary[]>("/pages?trashed=1"),
+  getPage: (id: string) => request<Page>(`/pages/${encodeURIComponent(id)}`),
+  createPage: (input: PagePatch & { parentId?: string | null }) => request<Page>("/pages", "POST", input),
+  updatePage: (id: string, patch: PagePatch) => request<Page>(`/pages/${encodeURIComponent(id)}`, "PUT", patch),
+  deletePage: (id: string) => request<void>(`/pages/${encodeURIComponent(id)}`, "DELETE"),
 };
